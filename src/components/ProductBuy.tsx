@@ -172,28 +172,24 @@ export function ProductBuy({ product }: { product: Product }) {
         </button>
       </div>
 
-      <div className="trust">
+      <dl className="pdp-trust">
         <div>
-          <h4>Envío</h4>
-          <p>
-            <span className="ph">48–72 h</span> · seguido
-          </p>
+          <dt>Envío</dt>
+          <dd>
+            <span className="ph">48–72 h</span> · con seguimiento
+          </dd>
         </div>
         <div>
-          <h4>Devoluciones</h4>
-          <p>
+          <dt>Devoluciones</dt>
+          <dd>
             <span className="ph">30 días</span> · sin coste
-          </p>
+          </dd>
         </div>
         <div>
-          <h4>Pago</h4>
-          <p>Seguro</p>
+          <dt>Pago</dt>
+          <dd>Cifrado y seguro</dd>
         </div>
-        <div>
-          <h4>Atención</h4>
-          <p>Personas</p>
-        </div>
-      </div>
+      </dl>
 
       {/* Mobile sticky add-to-cart bar */}
       <div className="buybar">

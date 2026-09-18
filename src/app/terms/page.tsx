@@ -9,9 +9,9 @@ export const metadata: Metadata = {
 export default function TermsPage() {
   return (
     <div className="wrap">
-      <header className="phead">
+      <header className="phead phead--min">
         <span className="eyebrow">Legal</span>
-        <h1 className="h-display">Términos</h1>
+        <h1>Términos</h1>
       </header>
       <div className="prose" style={{ paddingBottom: "clamp(40px,8vh,90px)" }}>
         <p className="notice">

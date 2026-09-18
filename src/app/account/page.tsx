@@ -39,25 +39,36 @@ export default function AccountPage() {
   }
 
   return (
-    <div className="wrap" style={{ paddingBlock: "clamp(24px,4vh,50px)" }}>
-      <header className="phead" style={{ paddingBottom: 20 }}>
+    <div className="wrap">
+      <header className="phead phead--min">
         <span className="eyebrow">Cuenta</span>
-        <h1 className="h-display">Hola, {user.name}.</h1>
+        <h1>Hola, {user.name}.</h1>
       </header>
-      <div className="acct-grid">
-        <Link className="acct-card" href="/account/orders">
-          <h3 className="serif">Mis pedidos</h3>
-          <p>Historial y estado.</p>
+      <div className="stacklist">
+        <Link className="stackrow" href="/account/orders">
+          <span className="idx">I</span>
+          <div>
+            <h3>Mis pedidos</h3>
+            <p>Historial y estado.</p>
+          </div>
+          <span className="go">Ver →</span>
         </Link>
-        <Link className="acct-card" href="/wishlist">
-          <h3 className="serif">Guardados</h3>
-          <p>Lo que has guardado.</p>
+        <Link className="stackrow" href="/wishlist">
+          <span className="idx">II</span>
+          <div>
+            <h3>Guardados</h3>
+            <p>Lo que has guardado.</p>
+          </div>
+          <span className="go">Ver →</span>
         </Link>
-        <div className="acct-card">
-          <h3 className="serif">Sesión</h3>
-          <p>{user.email}</p>
-          <button className="linkish" onClick={logout} style={{ marginTop: 8, alignSelf: "flex-start" }}>
-            Cerrar sesión
+        <div className="stackrow">
+          <span className="idx">III</span>
+          <div>
+            <h3>Sesión</h3>
+            <p>{user.email}</p>
+          </div>
+          <button className="go" onClick={logout} style={{ background: "none", border: 0, cursor: "pointer" }}>
+            Salir
           </button>
         </div>
       </div>

@@ -9,9 +9,9 @@ export const metadata: Metadata = {
 export default function SizeGuidePage() {
   return (
     <div className="wrap">
-      <header className="phead">
+      <header className="phead phead--min">
         <span className="eyebrow">Ayuda</span>
-        <h1 className="h-display">Guía de tallas</h1>
+        <h1>Guía de tallas</h1>
       </header>
       <div className="prose" style={{ paddingBottom: "clamp(40px,8vh,90px)" }}>
         <p>

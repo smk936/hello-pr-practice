@@ -44,6 +44,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         />
       </head>
       <body>
+        <div className="grain" aria-hidden="true" />
         <Providers>
           <a className="skip" href="#main">
             Saltar al contenido

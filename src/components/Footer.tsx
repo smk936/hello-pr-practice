@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Newsletter } from "@/components/Newsletter";
 
 export function Footer() {
   return (
@@ -24,6 +25,10 @@ export function Footer() {
           <h4>Atención</h4>
           <p>Personas, no bots</p>
         </div>
+      </div>
+
+      <div className="wrap" style={{ paddingTop: 40, borderBottom: "1px solid var(--border-2)" }}>
+        <Newsletter />
       </div>
 
       <div className="wrap ft__grid">

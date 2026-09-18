@@ -13,18 +13,9 @@ export function ProductCard({ product, sig }: { product: Product; sig?: string }
   const p = product.price;
   const c = product.compareAtPrice;
 
-  const frameStyle = { "--fa": product.card.a, "--fb": product.card.b } as CSSProperties;
-
   return (
-    <article className="pcard" style={frameStyle}>
+    <article className="pcard" style={{ "--fa": product.card.a } as CSSProperties}>
       <div className="pcard__frame">
-        <div className="pcard__img pcard__img--a">
-          <i className="sh" style={{ inset: "0 44% 30% 0", transform: "skewX(-9deg)" }} />
-        </div>
-        <div className="pcard__img pcard__img--b">
-          <i className="sh" style={{ inset: "22% 0 0 46%", transform: "skewX(-9deg)" }} />
-        </div>
-        <span className="pcard__fig">receta B</span>
         <button
           className="pcard__wish"
           aria-pressed={saved}

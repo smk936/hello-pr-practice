@@ -14,9 +14,9 @@ export default function OrdersPage() {
 
   return (
     <div className="wrap">
-      <header className="phead">
+      <header className="phead phead--min">
         <span className="eyebrow">Cuenta</span>
-        <h1 className="h-display">Mis pedidos</h1>
+        <h1>Mis pedidos</h1>
       </header>
 
       {orders === null ? (
@@ -29,9 +29,9 @@ export default function OrdersPage() {
           </Link>
         </div>
       ) : (
-        <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
+        <div className="ledger" style={{ borderTop: "1px solid var(--border)" }}>
           {orders.map((o) => (
-            <li key={o.id} style={{ border: "1px solid var(--border)", padding: 18, marginBottom: 12 }}>
+            <div key={o.id} className="ledger__row">
               <div style={{ display: "flex", justifyContent: "space-between", gap: 12, flexWrap: "wrap" }}>
                 <span className="mono">
                   {o.id}
@@ -52,9 +52,9 @@ export default function OrdersPage() {
                 ))}
               </div>
               <div style={{ marginTop: 8, fontWeight: 500 }}>{formatMoney(o.subtotal, o.currencyCode)}</div>
-            </li>
+            </div>
           ))}
-        </ul>
+        </div>
       )}
       <div style={{ height: "clamp(40px,8vh,90px)" }} />
     </div>

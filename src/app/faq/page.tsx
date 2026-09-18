@@ -44,9 +44,9 @@ const FAQS: { q: string; a: React.ReactNode }[] = [
 export default function FaqPage() {
   return (
     <div className="wrap">
-      <header className="phead">
+      <header className="phead phead--min">
         <span className="eyebrow">Ayuda</span>
-        <h1 className="h-display">Preguntas frecuentes</h1>
+        <h1>Preguntas frecuentes</h1>
       </header>
       <div className="faq" style={{ maxWidth: 720, paddingBottom: "clamp(40px,8vh,90px)" }}>
         {FAQS.map((f, i) => (

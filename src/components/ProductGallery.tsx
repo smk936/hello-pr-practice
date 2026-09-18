@@ -8,11 +8,8 @@ export function ProductGallery({ product }: { product: Product }) {
   const [active, setActive] = useState(0);
 
   const tiles = [
-    ...product.images.map((img, i) => ({
-      tone: img.tone,
-      label: `${String(i + 1).padStart(2, "0")} · ${img.alt}`,
-    })),
-    { tone: "#8C7A67", label: "vídeo · [placeholder]" },
+    ...product.images.map((img) => ({ tone: img.tone, video: false })),
+    { tone: "#8C7A67", video: true },
   ];
 
   useEffect(() => {
@@ -30,8 +27,8 @@ export function ProductGallery({ product }: { product: Product }) {
     <div className="gallery-wrap">
       <div className="gallery" ref={ref} aria-label="Galería de imágenes">
         {tiles.map((t, i) => (
-          <figure className="gtile" style={{ background: t.tone }} key={i}>
-            <span className="tag">{t.label}</span>
+          <figure key={i} className={`gtile${t.video ? " gtile--video" : ""}`} style={{ background: t.tone }}>
+            {t.video ? <span className="gtile__note">Vídeo · [placeholder]</span> : null}
           </figure>
         ))}
       </div>
