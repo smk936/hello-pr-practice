@@ -1,0 +1,43 @@
+{%- comment -%} Gift card — standalone template (no theme layout). {%- endcomment -%}
+{% layout none %}
+<!doctype html>
+<html lang="{{ request.locale.iso_code }}">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Tarjeta regalo · {{ shop.name }}</title>
+    {% render 'fonts' %}
+    {% render 'css-variables' %}
+    {{ 'theme.css' | asset_url | stylesheet_tag }}
+    <style>
+      body { display: grid; place-items: center; min-height: 100vh; }
+      .gc { width: min(460px, 92vw); text-align: center; display: grid; gap: 1.4rem; padding: 2rem; }
+      .gc__card { border: var(--hair); padding: 2rem; display: grid; gap: 1rem; background: var(--color-bg-contrast); color: var(--color-text-contrast); }
+      .gc__value { font-family: var(--font-display); font-size: 3rem; font-weight: 340; }
+      .gc__code { font-family: var(--font-mono); font-size: 1.2rem; letter-spacing: 0.16em; border: 1px dashed currentColor; padding: 0.8rem; }
+      .gc__actions { display: flex; gap: 0.8rem; justify-content: center; flex-wrap: wrap; }
+    </style>
+  </head>
+  <body class="template-gift-card">
+    <main class="gc">
+      <p class="display display--m">{{ shop.name }}</p>
+      <p class="label">Tarjeta regalo</p>
+      <div class="gc__card">
+        <span class="label" style="color:inherit;opacity:.7">Saldo</span>
+        <span class="gc__value">{{ gift_card.balance | money }}</span>
+        {%- if gift_card.balance != gift_card.initial_value -%}
+          <span class="form-note" style="color:inherit;opacity:.7">de {{ gift_card.initial_value | money }}</span>
+        {%- endif -%}
+        <span class="gc__code">{{ gift_card.code | format_code }}</span>
+      </div>
+      {%- if gift_card.expired and gift_card.enabled -%}
+        <p class="form-error">Esta tarjeta caducó el {{ gift_card.expires_on | date: '%d/%m/%Y' }}.</p>
+      {%- endif -%}
+      <div class="gc__actions">
+        <a class="btn" href="{{ shop.url }}">Usar en la tienda</a>
+        <button class="btn btn--secondary" onclick="window.print()">Imprimir</button>
+      </div>
+    </main>
+  </body>
+</html>

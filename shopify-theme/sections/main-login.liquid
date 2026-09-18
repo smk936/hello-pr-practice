@@ -1,0 +1,63 @@
+{%- comment -%} Customer login + password recovery. Native customer forms. {%- endcomment -%}
+<div class="auth" data-login>
+  {%- comment -%} ---- Login ---- {%- endcomment -%}
+  <div data-login-view>
+    <h1 class="auth__title">{{ 'customer.login.title' | t }}</h1>
+    {%- form 'customer_login' -%}
+      {%- if form.errors -%}<div class="errors">{{ form.errors | default_errors }}</div>{%- endif -%}
+      <div class="stack">
+        <div class="field">
+          <label class="field__label" for="login-email">{{ 'customer.login.email' | t }}</label>
+          <input class="input" type="email" id="login-email" name="customer[email]" autocomplete="email" required>
+        </div>
+        <div class="field">
+          <label class="field__label" for="login-password">{{ 'customer.login.password' | t }}</label>
+          <input class="input" type="password" id="login-password" name="customer[password]" autocomplete="current-password" required>
+        </div>
+        <a href="#recover" class="link" data-recover-toggle>¿Olvidaste la contraseña?</a>
+        <button type="submit" class="btn btn--block">{{ 'customer.login.submit' | t }}</button>
+      </div>
+    {%- endform -%}
+    <p class="auth__switch">¿Primera vez? <a href="{{ routes.account_register_url }}">{{ 'customer.login.create' | t }}</a></p>
+  </div>
+
+  {%- comment -%} ---- Recover ---- {%- endcomment -%}
+  <div data-recover-view hidden>
+    <h1 class="auth__title">Recuperar contraseña</h1>
+    <p class="form-note">Te enviaremos un enlace para crear una nueva.</p>
+    {%- form 'recover_customer_password' -%}
+      {%- if form.errors -%}<div class="errors">{{ form.errors | default_errors }}</div>{%- endif -%}
+      {%- if form.posted_successfully? -%}<p class="form-success">Revisa tu correo.</p>{%- endif -%}
+      <div class="stack">
+        <div class="field">
+          <label class="field__label" for="recover-email">{{ 'customer.login.email' | t }}</label>
+          <input class="input" type="email" id="recover-email" name="email" autocomplete="email" required>
+        </div>
+        <button type="submit" class="btn btn--block">Enviar enlace</button>
+        <a href="#login" class="link" data-recover-toggle>Volver a entrar</a>
+      </div>
+    {%- endform -%}
+  </div>
+</div>
+
+<script>
+  (function () {
+    var root = document.querySelector('[data-login]');
+    if (!root) return;
+    var loginView = root.querySelector('[data-login-view]');
+    var recoverView = root.querySelector('[data-recover-view]');
+    function sync() {
+      var recover = window.location.hash === '#recover';
+      loginView.hidden = recover; recoverView.hidden = !recover;
+    }
+    root.addEventListener('click', function (e) {
+      if (e.target.closest('[data-recover-toggle]')) { /* hash change handles view */ setTimeout(sync, 0); }
+    });
+    window.addEventListener('hashchange', sync);
+    sync();
+  })();
+</script>
+
+{% schema %}
+{ "name": "Entrar", "settings": [] }
+{% endschema %}

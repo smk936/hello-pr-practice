@@ -1,0 +1,36 @@
+{%- comment -%} Manifesto / statement block. Large display type, optional aside. {%- endcomment -%}
+<section class="section {% if section.settings.contrast %}band--contrast{% endif %}" style="--section-spacing: {{ section.settings.spacing }}px">
+  <div class="page-width">
+    <div class="manifesto {% if section.settings.aside != blank %}manifesto--split{% endif %}">
+      <div>
+        {%- if section.settings.eyebrow != blank -%}<span class="label reveal">{{ section.settings.eyebrow | escape }}</span>{%- endif -%}
+        <div class="manifesto__body reveal">{{ section.settings.body }}</div>
+        {%- if section.settings.button_label != blank -%}
+          <div class="reveal" style="margin-top: 1.6rem">
+            <a class="link link--arrow" href="{{ section.settings.button_link }}">{{ section.settings.button_label | escape }}</a>
+          </div>
+        {%- endif -%}
+      </div>
+      {%- if section.settings.aside != blank -%}
+        <div class="manifesto__aside reveal">{{ section.settings.aside }}</div>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Texto destacado",
+  "tag": "section",
+  "settings": [
+    { "type": "checkbox", "id": "contrast", "label": "Fondo oscuro", "default": false },
+    { "type": "text", "id": "eyebrow", "label": "Antetítulo", "default": "Nuestra idea" },
+    { "type": "richtext", "id": "body", "label": "Texto", "default": "<p>No hacemos veinte prendas nuevas cada semana. Hacemos <em>pocas</em>, en buenos tejidos, y las repetimos cuando funcionan.</p>" },
+    { "type": "richtext", "id": "aside", "label": "Texto lateral (opcional)" },
+    { "type": "text", "id": "button_label", "label": "Enlace" },
+    { "type": "url", "id": "button_link", "label": "URL del enlace" },
+    { "type": "range", "id": "spacing", "min": 48, "max": 200, "step": 4, "unit": "px", "label": "Espaciado", "default": 120 }
+  ],
+  "presets": [ { "name": "Texto destacado" } ]
+}
+{% endschema %}

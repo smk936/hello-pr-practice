@@ -1,0 +1,66 @@
+{%- comment -%} Slide-in cart. Refreshed via Section Rendering API (id: cart-drawer). {%- endcomment -%}
+<div id="cart-drawer" class="drawer drawer--cart" data-cart-drawer aria-hidden="true">
+  <div class="drawer__overlay" data-drawer-close tabindex="-1"></div>
+  <aside class="drawer__panel" role="dialog" aria-modal="true" aria-label="{{ 'cart.general.title' | t }}">
+    <header class="drawer__head">
+      <h2 class="drawer__title">{{ 'cart.general.title' | t }} <span class="drawer__count" data-cart-count>({{ cart.item_count }})</span></h2>
+      <button type="button" class="drawer__close" data-drawer-close aria-label="{{ 'general.accessibility.close' | t }}">{% render 'icon', icon: 'close' %}</button>
+    </header>
+
+    {%- if cart.item_count > 0 -%}
+      {%- if section.settings.free_shipping_threshold > 0 -%}
+        {%- assign threshold = section.settings.free_shipping_threshold | times: 100 -%}
+        {%- if cart.total_price >= threshold -%}
+          <p class="drawer__ship drawer__ship--met">{{ section.settings.free_shipping_success }}</p>
+        {%- else -%}
+          {%- assign remaining = threshold | minus: cart.total_price -%}
+          <p class="drawer__ship">{{ section.settings.free_shipping_progress | replace: '[amount]', remaining | money }}</p>
+          <div class="drawer__bar"><span style="width:{{ cart.total_price | times: 100 | divided_by: threshold }}%"></span></div>
+        {%- endif -%}
+      {%- endif -%}
+
+      <ul class="cart-lines" role="list" data-cart-lines>
+        {%- for line in cart.items -%}
+          {% render 'cart-line', line: line %}
+        {%- endfor -%}
+      </ul>
+
+      <footer class="drawer__foot">
+        {%- if section.settings.show_note -%}
+          <details class="drawer__note">
+            <summary>{{ section.settings.note_label }}</summary>
+            <textarea name="note" data-cart-note aria-label="{{ section.settings.note_label }}">{{ cart.note }}</textarea>
+          </details>
+        {%- endif -%}
+        <div class="drawer__subtotal">
+          <span>{{ 'cart.general.subtotal' | t }}</span>
+          <span data-cart-subtotal>{{ cart.total_price | money }}</span>
+        </div>
+        <p class="drawer__fineprint">{{ 'cart.general.note' | t }}</p>
+        <form action="{{ routes.cart_url }}" method="post">
+          <button type="submit" name="checkout" class="btn btn--block" data-cart-checkout>{{ 'cart.general.checkout' | t }}</button>
+        </form>
+        <a class="link drawer__continue" href="{{ routes.all_products_collection_url }}" data-drawer-close>{{ 'cart.general.continue' | t }}</a>
+      </footer>
+    {%- else -%}
+      <div class="drawer__empty">
+        <p class="drawer__empty-msg">{{ 'cart.general.empty' | t }}</p>
+        <a class="btn" href="{{ routes.all_products_collection_url }}" data-drawer-close>{{ 'cart.general.continue' | t }}</a>
+      </div>
+    {%- endif -%}
+  </aside>
+</div>
+
+{% schema %}
+{
+  "name": "Cajón de carrito",
+  "settings": [
+    { "type": "checkbox", "id": "show_note", "label": "Permitir nota del pedido", "default": true },
+    { "type": "text", "id": "note_label", "label": "Etiqueta de la nota", "default": "¿Alguna indicación?" },
+    { "type": "header", "content": "Envío gratis" },
+    { "type": "number", "id": "free_shipping_threshold", "label": "Umbral de envío gratis (0 = desactivado)", "default": 0 },
+    { "type": "text", "id": "free_shipping_progress", "label": "Mensaje de progreso", "default": "Te faltan [amount] para el envío gratuito." },
+    { "type": "text", "id": "free_shipping_success", "label": "Mensaje conseguido", "default": "Tienes el envío gratuito." }
+  ]
+}
+{% endschema %}

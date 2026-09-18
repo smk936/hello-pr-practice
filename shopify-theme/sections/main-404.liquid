@@ -1,0 +1,23 @@
+{%- comment -%} 404 not found. {%- endcomment -%}
+<div class="page-width">
+  <div class="notfound">
+    <span class="notfound__code">404</span>
+    <h1 class="display display--m">{{ section.settings.heading | escape }}</h1>
+    <p class="lede" style="margin-inline:auto">{{ section.settings.body | escape }}</p>
+    <div class="hero__actions" style="justify-content:center">
+      <a class="btn" href="{{ routes.all_products_collection_url }}">Ver todo</a>
+      <a class="btn btn--secondary" href="{{ routes.root_url }}">Ir al inicio</a>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "404",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Título", "default": "Esta página se agotó" },
+    { "type": "text", "id": "body", "label": "Texto", "default": "El enlace no existe o la prenda ya no está. Sigue por aquí." }
+  ]
+}
+{% endschema %}

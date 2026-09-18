@@ -1,0 +1,118 @@
+{
+  "sections": {
+    "hero": {
+      "type": "hero",
+      "settings": {
+        "scrim": true,
+        "eyebrow": "Otoño / Invierno",
+        "heading": "El abrigo que no pasa",
+        "subheading": "Una colección corta. Piezas que aguantan el uso diario y varios inviernos.",
+        "button_label": "Ver la colección",
+        "button2_label": "Nuestra idea",
+        "corner_note": "Edición limitada",
+        "height": "full",
+        "height_desktop": 90,
+        "align": "left",
+        "text_color": "light"
+      }
+    },
+    "marquee": {
+      "type": "text-marquee",
+      "settings": {
+        "contrast": false,
+        "text": "Hecho para durar, Tejidos honestos, Sin prisa, Temporada tras temporada",
+        "spacing": 20
+      }
+    },
+    "new-arrivals": {
+      "type": "featured-collection",
+      "settings": {
+        "eyebrow": "Lo nuevo",
+        "heading": "Recién llegado",
+        "products_to_show": 4,
+        "columns": "4",
+        "mobile_scroll": true,
+        "show_view_all": true,
+        "view_all_label": "Ver la colección"
+      }
+    },
+    "worlds": {
+      "type": "collection-list",
+      "settings": {
+        "eyebrow": "Por dónde empezar",
+        "heading": "Tres formas de vestir la temporada"
+      },
+      "blocks": {
+        "w1": { "type": "world", "settings": { "title": "Abrigos", "show_count": true } },
+        "w2": { "type": "world", "settings": { "title": "Punto", "show_count": true } },
+        "w3": { "type": "world", "settings": { "title": "Básicos", "show_count": true } }
+      },
+      "block_order": ["w1", "w2", "w3"]
+    },
+    "manifesto": {
+      "type": "rich-text",
+      "settings": {
+        "contrast": true,
+        "eyebrow": "Nuestra idea",
+        "body": "<p>No hacemos veinte prendas nuevas cada semana. Hacemos <em>pocas</em>, en buenos tejidos, y las repetimos cuando funcionan.</p>",
+        "aside": "<p>Producción en lotes cortos. Reponemos lo que gusta en lugar de perseguir cada tendencia.</p>",
+        "button_label": "Cómo trabajamos",
+        "spacing": 120
+      }
+    },
+    "editorial-fabric": {
+      "type": "image-with-text",
+      "settings": {
+        "layout": "image_first",
+        "contrast": false,
+        "eyebrow": "El tejido",
+        "heading": "Lana que respira, no que pica",
+        "body": "<p>Trabajamos con hilaturas conocidas por su tacto. Añade aquí el origen real del tejido cuando lo tengas confirmado.</p>",
+        "button_label": "Ver punto"
+      }
+    },
+    "bestsellers": {
+      "type": "featured-collection",
+      "settings": {
+        "eyebrow": "Los de siempre",
+        "heading": "Se agotan y vuelven",
+        "products_to_show": 4,
+        "columns": "4",
+        "mobile_scroll": true,
+        "show_view_all": true,
+        "contrast": false
+      }
+    },
+    "testimonials": {
+      "type": "testimonials",
+      "disabled": true,
+      "settings": {
+        "eyebrow": "Lo que dicen",
+        "heading": "En sus palabras"
+      },
+      "blocks": {}
+    },
+    "newsletter": {
+      "type": "newsletter",
+      "settings": {
+        "contrast": true,
+        "centered": true,
+        "eyebrow": "Una carta al mes",
+        "heading": "Lo nuevo, antes que nadie",
+        "body": "Sin spam. Una vez al mes, lo que sale y algo que merezca leerse.",
+        "fineprint": "Puedes darte de baja cuando quieras."
+      }
+    }
+  },
+  "order": [
+    "hero",
+    "marquee",
+    "new-arrivals",
+    "worlds",
+    "manifesto",
+    "editorial-fabric",
+    "bestsellers",
+    "testimonials",
+    "newsletter"
+  ]
+}

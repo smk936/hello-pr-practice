@@ -1,0 +1,72 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-product",
+      "blocks": {
+        "assurances": {
+          "type": "assurances",
+          "settings": {
+            "a1_title": "Envío 24–48 h",
+            "a1_text": "Pedidos antes de las 14 h.",
+            "a2_title": "Devolución 30 días",
+            "a2_text": "Sin preguntas.",
+            "a3_title": "Pago seguro",
+            "a3_text": "Cifrado en toda la compra."
+          }
+        },
+        "material": {
+          "type": "collapsible",
+          "settings": {
+            "heading": "Materiales",
+            "metafield_namespace": "custom",
+            "metafield_key": "material",
+            "placeholder": "Añade el material real desde Producto → Metacampos (custom.material)."
+          }
+        },
+        "fit": {
+          "type": "collapsible",
+          "settings": {
+            "heading": "Corte y talla",
+            "metafield_namespace": "custom",
+            "metafield_key": "fit",
+            "placeholder": "Añade la información de corte desde Producto → Metacampos (custom.fit)."
+          }
+        },
+        "care": {
+          "type": "collapsible",
+          "settings": {
+            "heading": "Cuidados",
+            "metafield_namespace": "custom",
+            "metafield_key": "care",
+            "placeholder": "Añade las instrucciones de cuidado desde Producto → Metacampos (custom.care)."
+          }
+        },
+        "shipping": {
+          "type": "collapsible",
+          "settings": {
+            "heading": "Envío y devoluciones",
+            "metafield_namespace": "custom",
+            "metafield_key": "shipping_returns",
+            "placeholder": "Añade tu política real de envío y devoluciones (custom.shipping_returns) o edita este texto."
+          }
+        }
+      },
+      "block_order": ["assurances", "material", "fit", "care", "shipping"],
+      "settings": {
+        "show_vendor": false,
+        "show_quantity": true,
+        "show_dynamic_checkout": true,
+        "show_description_top": true
+      }
+    },
+    "recommendations": {
+      "type": "product-recommendations",
+      "settings": {
+        "heading": "Combina bien con",
+        "products_to_show": 4,
+        "columns": "4"
+      }
+    }
+  },
+  "order": ["main", "recommendations"]
+}

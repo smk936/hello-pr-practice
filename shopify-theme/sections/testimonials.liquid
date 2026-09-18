@@ -1,0 +1,54 @@
+{%- comment -%}
+  Testimonials. Merchant enters REAL quotes as blocks — nothing is invented.
+  If no blocks are configured, the section renders nothing on the storefront.
+{%- endcomment -%}
+{%- if section.blocks.size > 0 -%}
+  <section class="section {% if section.settings.contrast %}band--contrast{% endif %}">
+    <div class="page-width">
+      {%- if section.settings.heading != blank -%}
+        <div class="section-head">
+          <div class="section-head__title">
+            {%- if section.settings.eyebrow != blank -%}<span class="label">{{ section.settings.eyebrow | escape }}</span>{%- endif -%}
+            <h2 class="display display--l">{{ section.settings.heading | escape }}</h2>
+          </div>
+        </div>
+      {%- endif -%}
+      <div class="quotes">
+        {%- for block in section.blocks -%}
+          <figure class="quote reveal" style="--i:{{ forloop.index }}" {{ block.shopify_attributes }}>
+            <blockquote class="quote__body">“{{ block.settings.quote | escape }}”</blockquote>
+            {%- if block.settings.author != blank -%}
+              <figcaption class="quote__who">{{ block.settings.author | escape }}{% if block.settings.detail != blank %} · {{ block.settings.detail | escape }}{% endif %}</figcaption>
+            {%- endif -%}
+          </figure>
+        {%- endfor -%}
+      </div>
+    </div>
+  </section>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Testimonios",
+  "tag": "section",
+  "max_blocks": 6,
+  "settings": [
+    { "type": "paragraph", "content": "Introduce solo reseñas reales. Sin bloques, esta sección no aparece en la tienda." },
+    { "type": "checkbox", "id": "contrast", "label": "Fondo oscuro", "default": false },
+    { "type": "text", "id": "eyebrow", "label": "Antetítulo", "default": "Lo que dicen" },
+    { "type": "text", "id": "heading", "label": "Título", "default": "En sus palabras" }
+  ],
+  "blocks": [
+    {
+      "type": "quote",
+      "name": "Reseña",
+      "settings": [
+        { "type": "textarea", "id": "quote", "label": "Cita (real)" },
+        { "type": "text", "id": "author", "label": "Autor" },
+        { "type": "text", "id": "detail", "label": "Detalle (ciudad, prenda…)" }
+      ]
+    }
+  ],
+  "presets": [ { "name": "Testimonios" } ]
+}
+{% endschema %}

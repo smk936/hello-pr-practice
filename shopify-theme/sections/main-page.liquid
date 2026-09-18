@@ -1,0 +1,23 @@
+{%- comment -%} Static page. Renders page.content (rich text from admin). {%- endcomment -%}
+<div class="section section--tight">
+  <div class="page-width {% if section.settings.narrow %}page-width--narrow{% endif %}">
+    <div class="page-hero">
+      {%- if section.settings.eyebrow != blank -%}<span class="label">{{ section.settings.eyebrow | escape }}</span>{%- endif -%}
+      <h1 class="page-hero__title">{{ page.title | escape }}</h1>
+    </div>
+    <div class="rte">
+      {{ page.content }}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Página",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Antetítulo" },
+    { "type": "checkbox", "id": "narrow", "label": "Ancho de lectura estrecho", "default": true }
+  ]
+}
+{% endschema %}

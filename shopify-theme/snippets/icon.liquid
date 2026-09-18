@@ -1,0 +1,21 @@
+{%- comment -%} Custom line-icon set. Usage: {% render 'icon', icon: 'bag' %} {%- endcomment -%}
+{%- case icon -%}
+  {%- when 'search' -%}
+    <svg class="icon icon-search" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true" focusable="false"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></svg>
+  {%- when 'account' -%}
+    <svg class="icon icon-account" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true" focusable="false"><circle cx="12" cy="8" r="3.2"/><path d="M5 20c0-3.3 3.1-5.6 7-5.6s7 2.3 7 5.6"/></svg>
+  {%- when 'bag' -%}
+    <svg class="icon icon-bag" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true" focusable="false"><path d="M6 8h12l-1 12H7L6 8z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>
+  {%- when 'menu' -%}
+    <svg class="icon icon-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true" focusable="false"><line x1="3" y1="8" x2="21" y2="8"/><line x1="3" y1="16" x2="21" y2="16"/></svg>
+  {%- when 'close' -%}
+    <svg class="icon icon-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true" focusable="false"><line x1="5" y1="5" x2="19" y2="19"/><line x1="19" y1="5" x2="5" y2="19"/></svg>
+  {%- when 'plus' -%}
+    <svg class="icon icon-plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true" focusable="false"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+  {%- when 'minus' -%}
+    <svg class="icon icon-minus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true" focusable="false"><line x1="5" y1="12" x2="19" y2="12"/></svg>
+  {%- when 'chevron' -%}
+    <svg class="icon icon-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true" focusable="false"><polyline points="6 9 12 15 18 9"/></svg>
+  {%- when 'arrow' -%}
+    <svg class="icon icon-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true" focusable="false"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
+{%- endcase -%}

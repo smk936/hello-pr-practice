@@ -1,0 +1,20 @@
+{%- comment -%} Maps Theme Settings → CSS custom properties consumed by theme.css {%- endcomment -%}
+<style>
+  :root {
+    --color-bg: {{ settings.color_background }};
+    --color-text: {{ settings.color_text }};
+    --color-bg-contrast: {{ settings.color_background_contrast }};
+    --color-text-contrast: {{ settings.color_text_contrast }};
+    --color-accent: {{ settings.color_accent }};
+    --color-secondary: {{ settings.color_secondary }};
+    --color-muted: {{ settings.color_muted }};
+    --color-border: {{ settings.color_border }};
+    --color-sale: {{ settings.color_sale }};
+    --color-btn-bg: {{ settings.color_button_background }};
+    --color-btn-text: {{ settings.color_button_text }};
+    --page-width: {{ settings.page_width }}px;
+    --section-spacing: {{ settings.section_spacing }}px;
+    --font-base: {{ settings.type_base_size }}px;
+    --btn-transform: {% if settings.button_uppercase %}uppercase{% else %}none{% endif %};
+  }
+</style>

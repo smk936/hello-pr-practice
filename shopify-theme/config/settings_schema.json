@@ -1,0 +1,94 @@
+[
+  {
+    "name": "theme_info",
+    "theme_name": "CENIT",
+    "theme_version": "1.0.0",
+    "theme_author": "CENIT",
+    "theme_documentation_url": "https://shopify.dev/docs/themes",
+    "theme_support_url": "https://help.shopify.com/"
+  },
+  {
+    "name": "Colores",
+    "settings": [
+      { "type": "header", "content": "Superficies" },
+      { "type": "color", "id": "color_background", "label": "Fondo (Cal)", "default": "#ECEAE2" },
+      { "type": "color", "id": "color_text", "label": "Texto (Tinta)", "default": "#17120E" },
+      { "type": "color", "id": "color_background_contrast", "label": "Fondo oscuro (Tinta)", "default": "#17120E" },
+      { "type": "color", "id": "color_text_contrast", "label": "Texto sobre oscuro (Cal)", "default": "#ECEAE2" },
+      { "type": "header", "content": "Acentos" },
+      { "type": "color", "id": "color_accent", "label": "Acento (Almagre)", "default": "#9A3B2B" },
+      { "type": "color", "id": "color_secondary", "label": "Secundario (Mar)", "default": "#22484C" },
+      { "type": "color", "id": "color_muted", "label": "Texto secundario (Piedra)", "default": "#6B6459" },
+      { "type": "color", "id": "color_border", "label": "Bordes / hairlines", "default": "#D6D1C6" },
+      { "type": "color", "id": "color_sale", "label": "Rebaja", "default": "#7A2E33" },
+      { "type": "header", "content": "Botones" },
+      { "type": "color", "id": "color_button_background", "label": "Fondo del botón", "default": "#17120E" },
+      { "type": "color", "id": "color_button_text", "label": "Texto del botón", "default": "#ECEAE2" }
+    ]
+  },
+  {
+    "name": "Tipografía",
+    "settings": [
+      { "type": "paragraph", "content": "El tema usa Fraunces, Schibsted Grotesk y Fragment Mono como identidad de marca." },
+      { "type": "range", "id": "type_base_size", "min": 14, "max": 18, "step": 1, "unit": "px", "label": "Tamaño base de texto", "default": 16 }
+    ]
+  },
+  {
+    "name": "Layout",
+    "settings": [
+      { "type": "range", "id": "page_width", "min": 1100, "max": 1600, "step": 20, "unit": "px", "label": "Ancho máximo", "default": 1360 },
+      { "type": "range", "id": "section_spacing", "min": 40, "max": 160, "step": 4, "unit": "px", "label": "Espaciado vertical de secciones", "default": 96 },
+      { "type": "checkbox", "id": "button_uppercase", "label": "Botones en mayúsculas", "default": true }
+    ]
+  },
+  {
+    "name": "Tarjetas de producto",
+    "settings": [
+      {
+        "type": "select",
+        "id": "card_image_ratio",
+        "label": "Proporción de imagen",
+        "options": [
+          { "value": "portrait", "label": "Retrato 4:5" },
+          { "value": "square", "label": "Cuadrado 1:1" },
+          { "value": "natural", "label": "Natural" }
+        ],
+        "default": "portrait"
+      },
+      { "type": "checkbox", "id": "card_show_swatches", "label": "Mostrar muestras de color", "default": true },
+      { "type": "checkbox", "id": "card_show_secondary_image", "label": "Segunda imagen al pasar el cursor", "default": true },
+      { "type": "checkbox", "id": "card_show_vendor", "label": "Mostrar la marca (vendor)", "default": false }
+    ]
+  },
+  {
+    "name": "Carrito",
+    "settings": [
+      {
+        "type": "select",
+        "id": "cart_type",
+        "label": "Tipo de carrito",
+        "options": [
+          { "value": "drawer", "label": "Cajón lateral" },
+          { "value": "page", "label": "Página" }
+        ],
+        "default": "drawer"
+      }
+    ]
+  },
+  {
+    "name": "Marca",
+    "settings": [
+      { "type": "image_picker", "id": "logo", "label": "Logo (opcional; si está vacío se usa el nombre de la tienda)" },
+      { "type": "range", "id": "logo_width", "min": 60, "max": 240, "step": 10, "unit": "px", "label": "Ancho del logo", "default": 120 },
+      { "type": "image_picker", "id": "favicon", "label": "Favicon" }
+    ]
+  },
+  {
+    "name": "Redes sociales",
+    "settings": [
+      { "type": "url", "id": "social_instagram", "label": "Instagram" },
+      { "type": "url", "id": "social_tiktok", "label": "TikTok" },
+      { "type": "url", "id": "social_pinterest", "label": "Pinterest" }
+    ]
+  }
+]

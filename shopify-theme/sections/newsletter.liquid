@@ -1,0 +1,38 @@
+{%- comment -%} Newsletter signup — native Shopify customer form. {%- endcomment -%}
+<section class="section {% if section.settings.contrast %}band--contrast{% endif %}">
+  <div class="page-width {% if section.settings.centered %}text-center{% endif %}">
+    <div class="newsletter {% if section.settings.centered %}mx-auto{% endif %}" {% if section.settings.centered %}style="margin-inline:auto; justify-items:center"{% endif %}>
+      {%- if section.settings.eyebrow != blank -%}<span class="label">{{ section.settings.eyebrow | escape }}</span>{%- endif -%}
+      {%- if section.settings.heading != blank -%}<h2 class="display display--m">{{ section.settings.heading | escape }}</h2>{%- endif -%}
+      {%- if section.settings.body != blank -%}<p class="lede">{{ section.settings.body | escape }}</p>{%- endif -%}
+      {%- form 'customer', class: 'newsletter__form' -%}
+        <input type="hidden" name="contact[tags]" value="newsletter">
+        <input type="hidden" name="contact[accepts_marketing]" value="true">
+        <input type="email" name="contact[email]" placeholder="{{ 'general.newsletter.label' | t }}" aria-label="{{ 'general.newsletter.label' | t }}" required>
+        <button type="submit" class="link link--arrow">{{ 'general.newsletter.button' | t }}</button>
+        {%- if form.posted_successfully? -%}
+          <p class="newsletter__success">{{ 'general.newsletter.success' | t }}</p>
+        {%- elsif form.errors -%}
+          <p class="form-error">{{ form.errors | default_errors }}</p>
+        {%- endif -%}
+      {%- endform -%}
+      {%- if section.settings.fineprint != blank -%}<p class="form-note">{{ section.settings.fineprint | escape }}</p>{%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Boletín",
+  "tag": "section",
+  "settings": [
+    { "type": "checkbox", "id": "contrast", "label": "Fondo oscuro", "default": true },
+    { "type": "checkbox", "id": "centered", "label": "Centrado", "default": true },
+    { "type": "text", "id": "eyebrow", "label": "Antetítulo", "default": "Una carta al mes" },
+    { "type": "text", "id": "heading", "label": "Título", "default": "Lo nuevo, antes que nadie" },
+    { "type": "text", "id": "body", "label": "Texto", "default": "Sin spam. Una vez al mes, lo que sale y algo que merezca leerse." },
+    { "type": "text", "id": "fineprint", "label": "Letra pequeña", "default": "Puedes darte de baja cuando quieras." }
+  ],
+  "presets": [ { "name": "Boletín" } ]
+}
+{% endschema %}

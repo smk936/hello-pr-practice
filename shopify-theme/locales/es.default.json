@@ -1,0 +1,42 @@
+{
+  "general": {
+    "search": {
+      "search": "Buscar",
+      "placeholder": "Busca una prenda, un color…",
+      "results_with_count": "{{ count }} resultados para “{{ terms }}”",
+      "no_results": "Nada con ese nombre. Prueba con menos palabras."
+    },
+    "pagination": { "previous": "Anterior", "next": "Siguiente" },
+    "accessibility": { "skip_to_content": "Saltar al contenido", "close": "Cerrar", "previous": "Anterior", "next": "Siguiente" },
+    "newsletter": { "label": "Tu correo", "button": "Apuntarme", "success": "Hecho. Nos vemos una vez al mes." }
+  },
+  "products": {
+    "product": {
+      "add_to_cart": "Añadir a la bolsa",
+      "sold_out": "Agotado",
+      "unavailable": "No disponible",
+      "on_sale": "Rebaja",
+      "quantity": "Cantidad",
+      "choose_size": "Elige una talla",
+      "size_guide": "Guía de tallas",
+      "from_price": "Desde {{ price }}"
+    }
+  },
+  "cart": {
+    "general": {
+      "title": "Tu bolsa",
+      "empty": "Tu bolsa está vacía. Todavía.",
+      "continue": "Seguir mirando",
+      "subtotal": "Subtotal",
+      "checkout": "Tramitar el pedido",
+      "remove": "Quitar",
+      "note": "Envío e impuestos se calculan en el pago.",
+      "taxes_included": "Impuestos incluidos."
+    }
+  },
+  "customer": {
+    "account": { "title": "Mi cuenta", "orders": "Mis pedidos", "logout": "Cerrar sesión", "details": "Datos" },
+    "login": { "title": "Entrar", "email": "Correo", "password": "Contraseña", "submit": "Entrar", "create": "Crear una cuenta" },
+    "register": { "title": "Crear cuenta", "first_name": "Nombre", "last_name": "Apellidos", "submit": "Crear cuenta" }
+  }
+}

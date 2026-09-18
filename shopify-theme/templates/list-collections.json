@@ -1,0 +1,13 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-list-collections",
+      "settings": {
+        "heading": "Todas las colecciones",
+        "sort": "default",
+        "hide_frontpage": true
+      }
+    }
+  },
+  "order": ["main"]
+}

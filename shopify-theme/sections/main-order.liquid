@@ -1,0 +1,70 @@
+{%- comment -%} Single order detail. {%- endcomment -%}
+<div class="account page-width">
+  <div class="section-head">
+    <div class="section-head__title">
+      <a class="link" href="{{ routes.account_url }}">← Mis pedidos</a>
+      <h1 class="display display--l" style="margin-top:0.6rem">Pedido {{ order.name }}</h1>
+      <p class="form-note">{{ order.created_at | date: '%d de %B de %Y, %H:%M' }}</p>
+    </div>
+  </div>
+
+  {%- if order.cancelled -%}
+    <p class="form-error">Pedido cancelado el {{ order.cancelled_at | date: '%d/%m/%Y' }}. {{ order.cancel_reason_label }}</p>
+  {%- endif -%}
+
+  <div class="account__grid">
+    <div class="stack">
+      <div class="stack-sm">
+        <span class="label">Estado</span>
+        <p>Pago: {{ order.financial_status_label }} · Envío: {{ order.fulfillment_status_label }}</p>
+      </div>
+      {%- if order.shipping_address -%}
+        <div class="stack-sm">
+          <span class="label">Dirección de envío</span>
+          <p>{{ order.shipping_address | format_address }}</p>
+        </div>
+      {%- endif -%}
+      {%- if order.billing_address -%}
+        <div class="stack-sm">
+          <span class="label">Facturación</span>
+          <p>{{ order.billing_address | format_address }}</p>
+        </div>
+      {%- endif -%}
+    </div>
+
+    <div class="stack">
+      <table class="orders-table">
+        <thead><tr><th>Artículo</th><th>Cantidad</th><th>Precio</th></tr></thead>
+        <tbody>
+          {%- for line in order.line_items -%}
+            <tr>
+              <td>
+                <a class="link" href="{{ line.product.url | default: '#' }}">{{ line.title | escape }}</a>
+                {%- if line.fulfillment.tracking_url -%}<br><a class="link" href="{{ line.fulfillment.tracking_url }}">Seguir envío</a>{%- endif -%}
+              </td>
+              <td>{{ line.quantity }}</td>
+              <td>{{ line.final_line_price | money }}</td>
+            </tr>
+          {%- endfor -%}
+        </tbody>
+        <tfoot>
+          <tr><td colspan="2">Subtotal</td><td>{{ order.line_items_subtotal_price | money }}</td></tr>
+          {%- for discount in order.cart_level_discount_applications -%}
+            <tr><td colspan="2">{{ discount.title }}</td><td>&minus;{{ discount.total_allocated_amount | money }}</td></tr>
+          {%- endfor -%}
+          {%- for shipping in order.shipping_methods -%}
+            <tr><td colspan="2">Envío ({{ shipping.title }})</td><td>{{ shipping.price | money }}</td></tr>
+          {%- endfor -%}
+          {%- for tax in order.tax_lines -%}
+            <tr><td colspan="2">{{ tax.title }}</td><td>{{ tax.price | money }}</td></tr>
+          {%- endfor -%}
+          <tr><td colspan="2"><strong>Total</strong></td><td><strong>{{ order.total_price | money }}</strong></td></tr>
+        </tfoot>
+      </table>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{ "name": "Pedido", "settings": [] }
+{% endschema %}

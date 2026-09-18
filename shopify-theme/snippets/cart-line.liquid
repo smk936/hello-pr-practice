@@ -1,0 +1,60 @@
+{%- comment -%}
+  A single cart line. Usage: {% render 'cart-line', line: line %}
+  Uses native line_item objects. Quantity changes key off line.key via /cart/change.js.
+{%- endcomment -%}
+<li class="cart-line" data-line-key="{{ line.key }}">
+  <a class="cart-line__media" href="{{ line.url }}" tabindex="-1" aria-hidden="true">
+    {%- if line.image -%}
+      {{ line.image | image_url: width: 200 | image_tag: loading: 'lazy', widths: '100, 160, 200', class: 'cart-line__img', alt: line.title | escape }}
+    {%- else -%}
+      {{ 'product-1' | placeholder_svg_tag: 'cart-line__img cart-line__img--placeholder' }}
+    {%- endif -%}
+  </a>
+
+  <div class="cart-line__body">
+    <div class="cart-line__head">
+      <div>
+        <a class="cart-line__name" href="{{ line.url }}">{{ line.product.title | escape }}</a>
+        {%- unless line.product.has_only_default_variant -%}
+          <p class="cart-line__variant">{{ line.variant.title | escape }}</p>
+        {%- endunless -%}
+        {%- if line.selling_plan_allocation -%}
+          <p class="cart-line__variant">{{ line.selling_plan_allocation.selling_plan.name | escape }}</p>
+        {%- endif -%}
+        {%- if line.line_level_discount_allocations.size > 0 -%}
+          <ul class="cart-line__discounts" role="list">
+            {%- for discount in line.line_level_discount_allocations -%}
+              <li class="cart-line__discount">{{ discount.discount_application.title | escape }} (&minus;{{ discount.amount | money }})</li>
+            {%- endfor -%}
+          </ul>
+        {%- endif -%}
+        {%- if line.properties.size > 0 -%}
+          <ul class="cart-line__props" role="list">
+            {%- for prop in line.properties -%}
+              {%- unless prop.last == blank or prop.first contains '_' -%}
+                <li>{{ prop.first | escape }}: {{ prop.last | escape }}</li>
+              {%- endunless -%}
+            {%- endfor -%}
+          </ul>
+        {%- endif -%}
+      </div>
+      <button type="button" class="cart-line__remove" data-line-remove="{{ line.key }}" aria-label="{{ 'cart.general.remove' | t }}: {{ line.product.title | escape }}">
+        {% render 'icon', icon: 'close' %}
+      </button>
+    </div>
+
+    <div class="cart-line__foot">
+      <div class="qty" data-qty>
+        <button type="button" class="qty__btn" data-qty-down data-line-key="{{ line.key }}" aria-label="{{ 'products.product.quantity' | t }} &minus;">{% render 'icon', icon: 'minus' %}</button>
+        <input class="qty__input" type="number" inputmode="numeric" min="0" value="{{ line.quantity }}" name="updates[{{ line.key }}]" data-line-qty="{{ line.key }}" aria-label="{{ 'products.product.quantity' | t }}">
+        <button type="button" class="qty__btn" data-qty-up data-line-key="{{ line.key }}" aria-label="{{ 'products.product.quantity' | t }} +">{% render 'icon', icon: 'plus' %}</button>
+      </div>
+      <div class="cart-line__price">
+        {%- if line.original_line_price > line.final_line_price -%}
+          <s class="cart-line__was">{{ line.original_line_price | money }}</s>
+        {%- endif -%}
+        <span class="cart-line__now">{{ line.final_line_price | money }}</span>
+      </div>
+    </div>
+  </div>
+</li>

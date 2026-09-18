@@ -1,0 +1,42 @@
+{%- comment -%} All collections index. {%- endcomment -%}
+<div class="section section--tight">
+  <div class="page-width">
+    <div class="collection-hero">
+      <span class="label">Catálogo</span>
+      <h1 class="display display--l">{{ section.settings.heading | default: page_title | escape }}</h1>
+    </div>
+    <div class="worlds" style="margin-top:2rem">
+      {%- assign colls = collections -%}
+      {%- if section.settings.sort == 'alphabetical' -%}{%- assign colls = collections | sort: 'title' -%}{%- endif -%}
+      {%- for coll in colls -%}
+        {%- unless coll.handle == 'frontpage' and section.settings.hide_frontpage -%}
+          <a class="world reveal" href="{{ coll.url }}" style="--i:{{ forloop.index }}">
+            {%- if coll.featured_image != blank -%}
+              {{ coll.featured_image | image_url: width: 900 | image_tag: loading: 'lazy', sizes: '(min-width:768px) 33vw, 100vw', widths: '400,600,900', alt: coll.title | escape }}
+            {%- else -%}
+              {{ 'collection-' | append: forloop.index | placeholder_svg_tag: 'placeholder' }}
+            {%- endif -%}
+            <span class="world__label">{{ coll.title | escape }}</span>
+            <span class="world__count">{{ coll.products_count }}</span>
+          </a>
+        {%- endunless -%}
+      {%- endfor -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Lista de colecciones",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Título", "default": "Todas las colecciones" },
+    {
+      "type": "select", "id": "sort", "label": "Orden",
+      "options": [ { "value": "default", "label": "Predeterminado" }, { "value": "alphabetical", "label": "Alfabético" } ],
+      "default": "default"
+    },
+    { "type": "checkbox", "id": "hide_frontpage", "label": "Ocultar colección “frontpage”", "default": true }
+  ]
+}
+{% endschema %}

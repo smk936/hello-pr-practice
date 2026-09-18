@@ -1,0 +1,7 @@
+{
+  "sections": {
+    "main": { "type": "main-article", "settings": { "show_author": true } },
+    "recommendations": { "type": "product-recommendations", "disabled": true, "settings": { "heading": "Del artículo a la tienda" } }
+  },
+  "order": ["main"]
+}

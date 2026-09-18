@@ -1,0 +1,91 @@
+{%- comment -%}
+  Product card. Native Shopify data only.
+  Usage: {% render 'product-card', card_product: product, position: forloop.index %}
+  Optional: reveal (bool, animate in), ratio (override settings)
+{%- endcomment -%}
+
+{%- liquid
+  assign ratio_setting = ratio | default: settings.card_image_ratio
+  case ratio_setting
+    when 'square'
+      assign pad = 100.0
+    when 'natural'
+      assign pad = false
+    else
+      assign pad = 125.0
+  endcase
+
+  assign feat = card_product.featured_media
+  assign second = card_product.media[1]
+  assign show_second = false
+  if settings.card_show_secondary_image and second != blank and second.id != feat.id
+    assign show_second = true
+  endif
+
+  assign on_sale = false
+  if card_product.compare_at_price > card_product.price
+    assign on_sale = true
+  endif
+-%}
+
+<article class="pcard{% if reveal %} reveal{% endif %}"{% if position %} style="--i:{{ position }}"{% endif %}>
+  <a class="pcard__link" href="{{ card_product.url }}">
+    <div class="pcard__frame{% if pad == false %} pcard__frame--natural{% endif %}"{% if pad %} style="--pad:{{ pad }}%"{% endif %}>
+      {%- if feat != blank -%}
+        {{ feat | image_url: width: 800 | image_tag:
+          loading: 'lazy',
+          sizes: '(min-width: 990px) 25vw, (min-width: 750px) 33vw, 50vw',
+          widths: '300, 400, 600, 800, 1000',
+          class: 'pcard__img pcard__img--primary',
+          alt: feat.alt | default: card_product.title | escape
+        }}
+        {%- if show_second -%}
+          {{ second | image_url: width: 800 | image_tag:
+            loading: 'lazy',
+            sizes: '(min-width: 990px) 25vw, (min-width: 750px) 33vw, 50vw',
+            widths: '300, 400, 600, 800, 1000',
+            class: 'pcard__img pcard__img--secondary',
+            alt: second.alt | default: card_product.title | escape
+          }}
+        {%- endif -%}
+      {%- else -%}
+        {{ 'product-1' | placeholder_svg_tag: 'pcard__img pcard__placeholder' }}
+      {%- endif -%}
+
+      {%- comment -%} One signal only: sold out takes priority over sale {%- endcomment -%}
+      {%- if card_product.available == false -%}
+        <span class="pcard__flag pcard__flag--out">{{ 'products.product.sold_out' | t }}</span>
+      {%- elsif on_sale -%}
+        <span class="pcard__flag pcard__flag--sale">{{ 'products.product.on_sale' | t }}</span>
+      {%- endif -%}
+    </div>
+
+    <div class="pcard__meta">
+      {%- if card_product.vendor != blank and settings.card_show_vendor -%}
+        <span class="pcard__vendor">{{ card_product.vendor }}</span>
+      {%- endif -%}
+      <h3 class="pcard__name">{{ card_product.title | escape }}</h3>
+      {% render 'price', price_product: card_product %}
+    </div>
+  </a>
+
+  {%- if settings.card_show_swatches -%}
+    {%- for option in card_product.options_with_values -%}
+      {%- assign oname = option.name | downcase -%}
+      {%- if oname contains 'color' or oname contains 'colour' -%}
+        <ul class="pcard__swatches" aria-label="{{ option.name }}">
+          {%- for value in option.values limit: 5 -%}
+            <li class="pcard__swatch" title="{{ value | escape }}"
+              style="--sw:{% if value.swatch.color %}{{ value.swatch.color }}{% else %}var(--color-border){% endif %}"
+              {% if value.swatch.image %}data-img="true"{% endif %}>
+              {%- if value.swatch.image -%}
+                <span style="background-image:url({{ value.swatch.image | image_url: width: 40 }})"></span>
+              {%- endif -%}
+            </li>
+          {%- endfor -%}
+          {%- if option.values.size > 5 -%}<li class="pcard__swatch pcard__swatch--more">+{{ option.values.size | minus: 5 }}</li>{%- endif -%}
+        </ul>
+      {%- endif -%}
+    {%- endfor -%}
+  {%- endif -%}
+</article>

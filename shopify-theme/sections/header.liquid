@@ -1,0 +1,125 @@
+{%- comment -%} Main header: logo, menu, search, account, cart. Includes search modal + mobile nav. {%- endcomment -%}
+{%- liquid
+  assign menu = section.settings.menu
+  assign is_drawer = false
+  if settings.cart_type == 'drawer'
+    assign is_drawer = true
+  endif
+-%}
+
+<header class="header" data-header{% if section.settings.transparent_on_home %} data-transparent{% endif %}>
+  <div class="header__inner page-width">
+    <nav class="header__nav header__nav--left" aria-label="Principal">
+      {%- for link in linklists[menu].links limit: 4 -%}
+        {%- if link.links != blank -%}
+          <div class="header__has-children">
+            <a href="{{ link.url }}" class="header__navlink"{% if link.active %} aria-current="page"{% endif %}>{{ link.title | escape }}</a>
+            <div class="header__dropdown">
+              {%- for child in link.links -%}
+                <a href="{{ child.url }}">{{ child.title | escape }}</a>
+              {%- endfor -%}
+            </div>
+          </div>
+        {%- else -%}
+          <a href="{{ link.url }}" class="header__navlink"{% if link.active %} aria-current="page"{% endif %}>{{ link.title | escape }}</a>
+        {%- endif -%}
+      {%- endfor -%}
+    </nav>
+
+    <button class="header__burger" type="button" data-overlay-open="#mobile-nav" aria-label="Abrir menú" aria-controls="mobile-nav">
+      {% render 'icon', icon: 'menu' %}
+    </button>
+
+    <a href="{{ routes.root_url }}" class="header__logo" style="--logo-w: {{ settings.logo_width }}px" aria-label="{{ shop.name }}">
+      {%- if settings.logo != blank -%}
+        {{ settings.logo | image_url: width: 480 | image_tag: widths: '120,240,360,480', sizes: '120px', loading: 'eager', alt: shop.name | escape }}
+      {%- else -%}
+        {{ shop.name | escape }}
+      {%- endif -%}
+    </a>
+
+    <div class="header__actions">
+      <button class="header__icon" type="button" data-overlay-open="#search-modal" aria-label="{{ 'general.search.search' | t }}" aria-controls="search-modal">
+        {% render 'icon', icon: 'search' %}
+      </button>
+      <a class="header__icon header__icon--account" href="{% if customer %}{{ routes.account_url }}{% else %}{{ routes.account_login_url }}{% endif %}" aria-label="{{ 'customer.account.title' | t }}">
+        {% render 'icon', icon: 'account' %}
+      </a>
+      {%- if is_drawer -%}
+        <button class="header__icon" type="button" data-cart-toggle aria-label="{{ 'cart.general.title' | t }}">
+          {% render 'icon', icon: 'bag' %}
+          <span class="header__cart-count" data-cart-count data-count="{{ cart.item_count }}">{{ cart.item_count }}</span>
+        </button>
+      {%- else -%}
+        <a class="header__icon" href="{{ routes.cart_url }}" aria-label="{{ 'cart.general.title' | t }}">
+          {% render 'icon', icon: 'bag' %}
+          <span class="header__cart-count" data-cart-count data-count="{{ cart.item_count }}">{{ cart.item_count }}</span>
+        </a>
+      {%- endif -%}
+    </div>
+  </div>
+</header>
+
+{%- comment -%} ---------- SEARCH MODAL ---------- {%- endcomment -%}
+<div id="search-modal" class="search-modal" data-search-modal aria-hidden="true">
+  <div class="search-modal__overlay" data-overlay-close tabindex="-1"></div>
+  <div class="search-modal__panel" role="dialog" aria-modal="true" aria-label="{{ 'general.search.search' | t }}">
+    <div class="search-modal__inner page-width">
+      <form class="search-form" action="{{ routes.search_url }}" method="get" role="search">
+        {% render 'icon', icon: 'search' %}
+        <input type="search" name="q" data-search-input placeholder="{{ 'general.search.placeholder' | t }}" autocomplete="off" aria-label="{{ 'general.search.search' | t }}">
+        <input type="hidden" name="options[prefix]" value="last">
+        <button type="button" class="header__icon" data-overlay-close aria-label="{{ 'general.accessibility.close' | t }}">{% render 'icon', icon: 'close' %}</button>
+      </form>
+      <div class="predictive" data-predictive aria-live="polite"></div>
+    </div>
+  </div>
+</div>
+
+{%- comment -%} ---------- MOBILE NAV ---------- {%- endcomment -%}
+<div id="mobile-nav" class="mobile-nav" data-mobile-nav aria-hidden="true">
+  <div class="mobile-nav__overlay" data-overlay-close tabindex="-1"></div>
+  <div class="mobile-nav__panel" role="dialog" aria-modal="true" aria-label="Menú">
+    <div class="mobile-nav__head">
+      <span class="header__logo">{{ shop.name | escape }}</span>
+      <button type="button" class="header__icon" data-overlay-close aria-label="{{ 'general.accessibility.close' | t }}">{% render 'icon', icon: 'close' %}</button>
+    </div>
+    <div class="mobile-nav__links">
+      {%- for link in linklists[menu].links -%}
+        {%- if link.links != blank -%}
+          <div class="mobile-nav__link">
+            <a href="{{ link.url }}">{{ link.title | escape }}</a>
+            <button type="button" class="header__icon" data-subnav-toggle aria-expanded="false" aria-label="Desplegar {{ link.title | escape }}">{% render 'icon', icon: 'plus' %}</button>
+          </div>
+          <div hidden>
+            {%- for child in link.links -%}
+              <a class="mobile-nav__sublink" href="{{ child.url }}">{{ child.title | escape }}</a>
+            {%- endfor -%}
+          </div>
+        {%- else -%}
+          <a class="mobile-nav__link" href="{{ link.url }}">{{ link.title | escape }}</a>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+    <div class="mobile-nav__foot">
+      <a class="header__navlink" href="{% if customer %}{{ routes.account_url }}{% else %}{{ routes.account_login_url }}{% endif %}">{{ 'customer.account.title' | t }}</a>
+      {%- if settings.social_instagram != blank or settings.social_tiktok != blank or settings.social_pinterest != blank -%}
+        <div class="footer__social">
+          {%- if settings.social_instagram != blank -%}<a href="{{ settings.social_instagram }}" class="link">Instagram</a>{%- endif -%}
+          {%- if settings.social_tiktok != blank -%}<a href="{{ settings.social_tiktok }}" class="link">TikTok</a>{%- endif -%}
+          {%- if settings.social_pinterest != blank -%}<a href="{{ settings.social_pinterest }}" class="link">Pinterest</a>{%- endif -%}
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Encabezado",
+  "settings": [
+    { "type": "link_list", "id": "menu", "label": "Menú", "default": "main-menu" },
+    { "type": "checkbox", "id": "transparent_on_home", "label": "Encabezado transparente sobre héroe (inicio)", "default": false }
+  ]
+}
+{% endschema %}

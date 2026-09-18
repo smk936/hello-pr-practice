@@ -1,0 +1,3 @@
+# Shopify Theme Check configuration
+# Run: npx @shopify/cli theme check
+extends: theme-check:recommended

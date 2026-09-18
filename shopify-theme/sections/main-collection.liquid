@@ -1,0 +1,151 @@
+{%- comment -%}
+  Collection page. Native storefront filtering (collection.filters), sort_options,
+  and pagination. Filters submit via GET so they work without JS; JS auto-applies.
+{%- endcomment -%}
+{%- paginate collection.products by section.settings.products_per_page -%}
+<div class="section section--tight">
+  <div class="page-width">
+    {%- comment -%} Hero {%- endcomment -%}
+    <div class="collection-hero">
+      <span class="label">{{ collection.products_count }} {% if collection.products_count == 1 %}pieza{% else %}piezas{% endif %}</span>
+      <h1 class="display display--l">{{ collection.title | escape }}</h1>
+      {%- if collection.description != blank and section.settings.show_description -%}
+        <div class="collection-hero__desc rte">{{ collection.description }}</div>
+      {%- endif -%}
+    </div>
+
+    {%- comment -%} Toolbar {%- endcomment -%}
+    <div class="collection-bar">
+      <span class="collection-bar__count">
+        {%- if paginate.pages > 1 -%}{{ paginate.current_offset | plus: 1 }}–{{ paginate.current_offset | plus: paginate.page_size | at_most: collection.products_count }} de {% endif -%}
+        {{ collection.products_count }}
+      </span>
+      <div class="collection-bar__tools">
+        {%- if collection.filters.size > 0 -%}
+          <button type="button" class="toolbtn" data-filters-open>{% render 'icon', icon: 'menu' %} Filtrar</button>
+        {%- endif -%}
+        {%- if section.settings.enable_sorting -%}
+          <label class="toolbtn">
+            <span class="visually-hidden">Ordenar</span>
+            <select class="select-native" data-sort aria-label="Ordenar">
+              {%- assign sort_by = collection.sort_by | default: collection.default_sort_by -%}
+              {%- for option in collection.sort_options -%}
+                <option value="{{ option.value }}"{% if option.value == sort_by %} selected{% endif %}>{{ option.name }}</option>
+              {%- endfor -%}
+            </select>
+          </label>
+        {%- endif -%}
+      </div>
+    </div>
+
+    <div class="collection-layout">
+      {%- comment -%} Filters {%- endcomment -%}
+      {%- if collection.filters.size > 0 -%}
+        <aside class="filters" data-filters>
+          <div class="filters__head">
+            <span class="label">Filtrar</span>
+            <button type="button" class="header__icon" data-filters-close aria-label="Cerrar">{% render 'icon', icon: 'close' %}</button>
+          </div>
+          <form data-filter-form>
+            {%- if collection.sort_by != blank -%}<input type="hidden" name="sort_by" value="{{ collection.sort_by }}">{%- endif -%}
+            {%- for filter in collection.filters -%}
+              <details class="filter" open>
+                <summary class="filter__summary">{{ filter.label | escape }} {% render 'icon', icon: 'chevron' %}</summary>
+                {%- case filter.type -%}
+                  {%- when 'list', 'boolean' -%}
+                    <div class="filter__list">
+                      {%- for value in filter.values -%}
+                        <label class="filter__item"{% if value.count == 0 and value.active == false %} aria-disabled="true"{% endif %}>
+                          <input type="checkbox" name="{{ value.param_name }}" value="{{ value.value }}"{% if value.active %} checked{% endif %}{% if value.count == 0 and value.active == false %} disabled{% endif %}>
+                          <span>{{ value.label | escape }}</span>
+                          <span class="filter__count">({{ value.count }})</span>
+                        </label>
+                      {%- endfor -%}
+                    </div>
+                  {%- when 'price_range' -%}
+                    <div class="filter__list">
+                      <div class="price-range">
+                        <label class="field"><span class="field__label">Mín</span>
+                          <input class="input" type="number" name="{{ filter.min_value.param_name }}" value="{{ filter.min_value.value }}" placeholder="{{ 0 | money_without_currency }}" min="0" max="{{ filter.range_max | money_without_currency | replace: ',', '' }}"></label>
+                        <label class="field"><span class="field__label">Máx</span>
+                          <input class="input" type="number" name="{{ filter.max_value.param_name }}" value="{{ filter.max_value.value }}" placeholder="{{ filter.range_max | money_without_currency }}" min="0" max="{{ filter.range_max | money_without_currency | replace: ',', '' }}"></label>
+                      </div>
+                    </div>
+                {%- endcase -%}
+              </details>
+            {%- endfor -%}
+            <div class="js-only" style="margin-top:1rem">
+              <button type="submit" class="btn btn--block">Aplicar</button>
+              <a href="{{ collection.url }}" class="link" style="margin-top:0.8rem;display:inline-block">Quitar filtros</a>
+            </div>
+          </form>
+        </aside>
+      {%- endif -%}
+
+      {%- comment -%} Grid {%- endcomment -%}
+      <div>
+        {%- comment -%} Active filter chips {%- endcomment -%}
+        {%- assign active_count = 0 -%}
+        {%- for filter in collection.filters -%}{%- assign active_count = active_count | plus: filter.active_values.size -%}{%- endfor -%}
+        {%- if active_count > 0 -%}
+          <div class="active-filters">
+            {%- for filter in collection.filters -%}
+              {%- for value in filter.active_values -%}
+                <a class="chip" href="{{ value.url_to_remove }}">{{ value.label | escape }} {% render 'icon', icon: 'close' %}</a>
+              {%- endfor -%}
+              {%- if filter.type == 'price_range' -%}
+                {%- if filter.min_value.value != blank or filter.max_value.value != blank -%}
+                  <a class="chip" href="{{ filter.url_to_remove }}">{{ filter.min_value.value | default: 0 | money }} – {{ filter.max_value.value | default: filter.range_max | money }} {% render 'icon', icon: 'close' %}</a>
+                {%- endif -%}
+              {%- endif -%}
+            {%- endfor -%}
+            <a class="link" href="{{ collection.url }}">Quitar todo</a>
+          </div>
+        {%- endif -%}
+
+        {%- if collection.products.size > 0 -%}
+          <div class="product-grid product-grid--{{ section.settings.columns }}" data-grid>
+            {%- for product in collection.products -%}
+              {% render 'product-card', card_product: product, position: forloop.index, reveal: true %}
+            {%- endfor -%}
+          </div>
+
+          {%- if paginate.pages > 1 -%}
+            <nav class="pagination" role="navigation" aria-label="Paginación">
+              {%- if paginate.previous -%}<a href="{{ paginate.previous.url }}" aria-label="Anterior">{% render 'icon', icon: 'arrow' %}</a>{%- endif -%}
+              {%- for part in paginate.parts -%}
+                {%- if part.is_link -%}<a href="{{ part.url }}">{{ part.title }}</a>
+                {%- elsif part.title == paginate.current_page -%}<span aria-current="page">{{ part.title }}</span>
+                {%- else -%}<span>{{ part.title }}</span>{%- endif -%}
+              {%- endfor -%}
+              {%- if paginate.next -%}<a href="{{ paginate.next.url }}" aria-label="Siguiente">{% render 'icon', icon: 'arrow' %}</a>{%- endif -%}
+            </nav>
+          {%- endif -%}
+        {%- else -%}
+          <div class="cart-empty">
+            <p class="display display--m">No hay piezas con estos filtros.</p>
+            <a class="btn" href="{{ collection.url }}">Quitar filtros</a>
+          </div>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</div>
+{%- endpaginate -%}
+
+{% schema %}
+{
+  "name": "Colección",
+  "tag": "section",
+  "settings": [
+    { "type": "range", "id": "products_per_page", "min": 8, "max": 48, "step": 4, "label": "Productos por página", "default": 24 },
+    {
+      "type": "select", "id": "columns", "label": "Columnas (escritorio)",
+      "options": [ { "value": "3", "label": "3" }, { "value": "4", "label": "4" } ],
+      "default": "4"
+    },
+    { "type": "checkbox", "id": "show_description", "label": "Mostrar descripción de la colección", "default": true },
+    { "type": "checkbox", "id": "enable_sorting", "label": "Permitir ordenar", "default": true }
+  ]
+}
+{% endschema %}

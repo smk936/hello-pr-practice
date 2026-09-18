@@ -1,0 +1,24 @@
+{%- comment -%} Activate account (set password from invite). {%- endcomment -%}
+<div class="auth">
+  <h1 class="auth__title">Activa tu cuenta</h1>
+  <p class="form-note">Crea una contraseña para terminar.</p>
+  {%- form 'activate_customer_password' -%}
+    {%- if form.errors -%}<div class="errors">{{ form.errors | default_errors }}</div>{%- endif -%}
+    <div class="stack">
+      <div class="field">
+        <label class="field__label" for="act-password">Contraseña</label>
+        <input class="input" type="password" id="act-password" name="customer[password]" autocomplete="new-password" required>
+      </div>
+      <div class="field">
+        <label class="field__label" for="act-confirm">Repite la contraseña</label>
+        <input class="input" type="password" id="act-confirm" name="customer[password_confirmation]" autocomplete="new-password" required>
+      </div>
+      <button type="submit" class="btn btn--block">Activar cuenta</button>
+      <button type="submit" name="decline" class="link">Rechazar invitación</button>
+    </div>
+  {%- endform -%}
+</div>
+
+{% schema %}
+{ "name": "Activar cuenta", "settings": [] }
+{% endschema %}

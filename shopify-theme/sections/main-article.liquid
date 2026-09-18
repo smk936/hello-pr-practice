@@ -1,0 +1,50 @@
+{%- comment -%} Single article. {%- endcomment -%}
+<article class="section section--tight">
+  <div class="page-width page-width--narrow">
+    <div class="page-hero text-center" style="justify-items:center">
+      <span class="label">{{ article.published_at | date: '%d %b %Y' }}</span>
+      <h1 class="page-hero__title">{{ article.title | escape }}</h1>
+      {%- if section.settings.show_author -%}<p class="article-card__meta">{{ article.author }}</p>{%- endif -%}
+    </div>
+  </div>
+  {%- if article.image != blank -%}
+    <div class="page-width" style="margin-block:2rem">
+      {{ article.image | image_url: width: 1600 | image_tag: sizes: '100vw', widths: '600,900,1200,1600', alt: article.title | escape }}
+    </div>
+  {%- endif -%}
+  <div class="page-width page-width--narrow">
+    <div class="rte">{{ article.content }}</div>
+
+    {%- if blog.comments_enabled? -%}
+      <div class="stack" style="margin-top:3rem">
+        <h2 class="display display--m">Comentarios</h2>
+        {%- if article.comments_count > 0 -%}
+          {%- for comment in article.comments -%}
+            <div class="quote" style="border-top:1px solid var(--color-border);padding-top:1rem">
+              <p>{{ comment.content }}</p>
+              <span class="quote__who">{{ comment.author }}</span>
+            </div>
+          {%- endfor -%}
+        {%- endif -%}
+        {%- form 'new_comment', article -%}
+          {%- if form.errors -%}<p class="form-error">{{ form.errors | default_errors }}</p>{%- endif -%}
+          {%- if form.posted_successfully? -%}<p class="form-success">Gracias, tu comentario se ha enviado.</p>{%- endif -%}
+          <div class="field"><label class="field__label" for="c-author">Nombre</label><input class="input" id="c-author" name="comment[author]" required></div>
+          <div class="field"><label class="field__label" for="c-email">Correo</label><input class="input" id="c-email" type="email" name="comment[email]" required></div>
+          <div class="field"><label class="field__label" for="c-body">Comentario</label><textarea class="input" id="c-body" name="comment[body]" required></textarea></div>
+          <button type="submit" class="btn">Enviar</button>
+        {%- endform -%}
+      </div>
+    {%- endif -%}
+  </div>
+</article>
+
+{% schema %}
+{
+  "name": "Artículo",
+  "tag": "section",
+  "settings": [
+    { "type": "checkbox", "id": "show_author", "label": "Mostrar autor", "default": true }
+  ]
+}
+{% endschema %}

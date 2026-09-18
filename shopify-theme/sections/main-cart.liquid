@@ -1,0 +1,82 @@
+{%- comment -%}
+  Cart page. Native cart object. Real checkout via POST to routes.cart_url.
+  Quantity updates: no-JS via updates[] + "Actualizar"; with JS via /cart/change.js.
+{%- endcomment -%}
+<div class="cart-page">
+  <div class="page-width" data-cart-root>
+    <div class="section-head" style="margin-bottom:1.5rem">
+      <div class="section-head__title">
+        <span class="label">{{ 'cart.general.title' | t }}</span>
+        <h1 class="display display--l">{{ 'cart.general.title' | t }} <span class="drawer__count" data-cart-count>({{ cart.item_count }})</span></h1>
+      </div>
+    </div>
+
+    {%- if cart.item_count > 0 -%}
+      <form action="{{ routes.cart_url }}" method="post" class="cart-page__grid">
+        <div>
+          <ul class="cart-lines cart-table" role="list" data-cart-lines>
+            {%- for line in cart.items -%}
+              {% render 'cart-line', line: line %}
+            {%- endfor -%}
+          </ul>
+          <div class="js-only" style="margin-top:1rem">
+            <a class="link link--arrow" href="{{ routes.all_products_collection_url }}">{{ 'cart.general.continue' | t }}</a>
+          </div>
+          <noscript>
+            <button type="submit" name="update" class="btn btn--secondary" style="margin-top:1rem">Actualizar la bolsa</button>
+          </noscript>
+        </div>
+
+        <aside class="cart-summary">
+          {%- if section.settings.show_note -%}
+            <details class="drawer__note">
+              <summary>{{ section.settings.note_label }}</summary>
+              <textarea name="note" data-cart-note aria-label="{{ section.settings.note_label }}">{{ cart.note }}</textarea>
+            </details>
+          {%- endif -%}
+
+          {%- if cart.cart_level_discount_applications.size > 0 -%}
+            <div class="cart-summary__row">
+              <span>Descuentos</span>
+              <span>
+                {%- for discount in cart.cart_level_discount_applications -%}
+                  {{ discount.title }} (&minus;{{ discount.total_allocated_amount | money }}){% unless forloop.last %}, {% endunless %}
+                {%- endfor -%}
+              </span>
+            </div>
+          {%- endif -%}
+
+          <div class="cart-summary__row cart-summary__row--total">
+            <span>{{ 'cart.general.subtotal' | t }}</span>
+            <span data-cart-subtotal>{{ cart.total_price | money }}</span>
+          </div>
+          <p class="cart-summary__note">{{ 'cart.general.note' | t }}</p>
+          {%- if cart.taxes_included -%}<p class="cart-summary__note">{{ 'cart.general.taxes_included' | t }}</p>{%- endif -%}
+
+          <button type="submit" name="checkout" class="btn btn--block">{{ 'cart.general.checkout' | t }}</button>
+
+          {%- if additional_checkout_buttons and section.settings.show_dynamic_checkout -%}
+            <div class="cart-summary__dynamic">{{ content_for_additional_checkout_buttons }}</div>
+          {%- endif -%}
+        </aside>
+      </form>
+    {%- else -%}
+      <div class="cart-empty">
+        <p class="display display--m">{{ 'cart.general.empty' | t }}</p>
+        <a class="btn" href="{{ routes.all_products_collection_url }}">{{ 'cart.general.continue' | t }}</a>
+      </div>
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Bolsa",
+  "tag": "section",
+  "settings": [
+    { "type": "checkbox", "id": "show_note", "label": "Permitir nota del pedido", "default": true },
+    { "type": "text", "id": "note_label", "label": "Etiqueta de la nota", "default": "¿Alguna indicación?" },
+    { "type": "checkbox", "id": "show_dynamic_checkout", "label": "Botones de pago dinámico", "default": true }
+  ]
+}
+{% endschema %}

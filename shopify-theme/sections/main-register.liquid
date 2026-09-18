@@ -1,0 +1,31 @@
+{%- comment -%} Customer registration. {%- endcomment -%}
+<div class="auth">
+  <h1 class="auth__title">{{ 'customer.register.title' | t }}</h1>
+  {%- form 'create_customer' -%}
+    {%- if form.errors -%}<div class="errors">{{ form.errors | default_errors }}</div>{%- endif -%}
+    <div class="stack">
+      <div class="field">
+        <label class="field__label" for="reg-first">{{ 'customer.register.first_name' | t }}</label>
+        <input class="input" id="reg-first" name="customer[first_name]" autocomplete="given-name">
+      </div>
+      <div class="field">
+        <label class="field__label" for="reg-last">{{ 'customer.register.last_name' | t }}</label>
+        <input class="input" id="reg-last" name="customer[last_name]" autocomplete="family-name">
+      </div>
+      <div class="field">
+        <label class="field__label" for="reg-email">{{ 'customer.login.email' | t }}</label>
+        <input class="input" type="email" id="reg-email" name="customer[email]" autocomplete="email" required>
+      </div>
+      <div class="field">
+        <label class="field__label" for="reg-password">{{ 'customer.login.password' | t }}</label>
+        <input class="input" type="password" id="reg-password" name="customer[password]" autocomplete="new-password" required>
+      </div>
+      <button type="submit" class="btn btn--block">{{ 'customer.register.submit' | t }}</button>
+    </div>
+  {%- endform -%}
+  <p class="auth__switch">¿Ya tienes cuenta? <a href="{{ routes.account_login_url }}">{{ 'customer.login.title' | t }}</a></p>
+</div>
+
+{% schema %}
+{ "name": "Crear cuenta", "settings": [] }
+{% endschema %}

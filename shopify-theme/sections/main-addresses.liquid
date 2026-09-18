@@ -1,0 +1,122 @@
+{%- comment -%} Customer addresses: list, add, edit, delete. Self-contained country/province sync. {%- endcomment -%}
+<div class="account page-width" data-addresses>
+  <div class="section-head">
+    <div class="section-head__title">
+      <a class="link" href="{{ routes.account_url }}">← {{ 'customer.account.title' | t }}</a>
+      <h1 class="display display--l" style="margin-top:0.6rem">Direcciones</h1>
+    </div>
+    <button type="button" class="btn" data-address-toggle="new">Añadir dirección</button>
+  </div>
+
+  {%- comment -%} New address form (hidden by default) {%- endcomment -%}
+  <div class="address-form" data-address-view="new" hidden style="margin-bottom:2rem">
+    {%- form 'customer_address', customer.new_address -%}
+      <div class="stack" style="max-width:520px">
+        <h2 class="display display--m">Nueva dirección</h2>
+        <div class="field"><label class="field__label" for="new-first">Nombre</label><input class="input" id="new-first" name="address[first_name]"></div>
+        <div class="field"><label class="field__label" for="new-last">Apellidos</label><input class="input" id="new-last" name="address[last_name]"></div>
+        <div class="field"><label class="field__label" for="new-company">Empresa (opcional)</label><input class="input" id="new-company" name="address[company]"></div>
+        <div class="field"><label class="field__label" for="new-addr1">Dirección</label><input class="input" id="new-addr1" name="address[address1]"></div>
+        <div class="field"><label class="field__label" for="new-addr2">Piso, puerta (opcional)</label><input class="input" id="new-addr2" name="address[address2]"></div>
+        <div class="field"><label class="field__label" for="new-city">Ciudad</label><input class="input" id="new-city" name="address[city]"></div>
+        <div class="field"><label class="field__label" for="new-country">País</label>
+          <select class="input" id="new-country" name="address[country]" data-country data-province-target="#new-province">{{ all_country_option_tags }}</select>
+        </div>
+        <div class="field" data-province-wrap><label class="field__label" for="new-province">Provincia</label><select class="input" id="new-province" name="address[province]"></select></div>
+        <div class="field"><label class="field__label" for="new-zip">Código postal</label><input class="input" id="new-zip" name="address[zip]"></div>
+        <div class="field"><label class="field__label" for="new-phone">Teléfono</label><input class="input" id="new-phone" type="tel" name="address[phone]"></div>
+        <label class="filter__item"><input type="checkbox" name="address[default]" value="1"> Usar como predeterminada</label>
+        <div class="hero__actions">
+          <button type="submit" class="btn">Guardar</button>
+          <button type="button" class="btn btn--secondary" data-address-toggle="new">Cancelar</button>
+        </div>
+      </div>
+    {%- endform -%}
+  </div>
+
+  {%- comment -%} Existing addresses {%- endcomment -%}
+  {%- if customer.addresses.size > 0 -%}
+    <div class="address-grid">
+      {%- for address in customer.addresses -%}
+        <div class="address-card">
+          {%- if address == customer.default_address -%}<span class="label">Predeterminada</span>{%- endif -%}
+          <p>{{ address | format_address }}</p>
+          <div class="hero__actions">
+            <button type="button" class="link" data-address-toggle="edit-{{ address.id }}">Editar</button>
+            {%- form 'customer_address', address -%}
+              <input type="hidden" name="_method" value="delete">
+              <button type="submit" class="link" onclick="return confirm('¿Eliminar esta dirección?')">Eliminar</button>
+            {%- endform -%}
+          </div>
+
+          <div class="address-form" data-address-view="edit-{{ address.id }}" hidden style="margin-top:1rem">
+            {%- form 'customer_address', address -%}
+              <div class="stack">
+                <div class="field"><label class="field__label" for="edit-first-{{ address.id }}">Nombre</label><input class="input" id="edit-first-{{ address.id }}" name="address[first_name]" value="{{ address.first_name }}"></div>
+                <div class="field"><label class="field__label" for="edit-last-{{ address.id }}">Apellidos</label><input class="input" id="edit-last-{{ address.id }}" name="address[last_name]" value="{{ address.last_name }}"></div>
+                <div class="field"><label class="field__label" for="edit-addr1-{{ address.id }}">Dirección</label><input class="input" id="edit-addr1-{{ address.id }}" name="address[address1]" value="{{ address.address1 }}"></div>
+                <div class="field"><label class="field__label" for="edit-addr2-{{ address.id }}">Piso, puerta</label><input class="input" id="edit-addr2-{{ address.id }}" name="address[address2]" value="{{ address.address2 }}"></div>
+                <div class="field"><label class="field__label" for="edit-city-{{ address.id }}">Ciudad</label><input class="input" id="edit-city-{{ address.id }}" name="address[city]" value="{{ address.city }}"></div>
+                <div class="field"><label class="field__label" for="edit-country-{{ address.id }}">País</label>
+                  <select class="input" id="edit-country-{{ address.id }}" name="address[country]" data-country data-province-target="#edit-province-{{ address.id }}" data-default="{{ address.country }}">{{ all_country_option_tags }}</select>
+                </div>
+                <div class="field"><label class="field__label" for="edit-province-{{ address.id }}">Provincia</label><select class="input" id="edit-province-{{ address.id }}" name="address[province]" data-default="{{ address.province }}"></select></div>
+                <div class="field"><label class="field__label" for="edit-zip-{{ address.id }}">Código postal</label><input class="input" id="edit-zip-{{ address.id }}" name="address[zip]" value="{{ address.zip }}"></div>
+                <div class="field"><label class="field__label" for="edit-phone-{{ address.id }}">Teléfono</label><input class="input" id="edit-phone-{{ address.id }}" type="tel" name="address[phone]" value="{{ address.phone }}"></div>
+                <label class="filter__item"><input type="checkbox" name="address[default]" value="1"{% if address == customer.default_address %} checked{% endif %}> Predeterminada</label>
+                <div class="hero__actions">
+                  <button type="submit" class="btn">Guardar cambios</button>
+                  <button type="button" class="btn btn--secondary" data-address-toggle="edit-{{ address.id }}">Cancelar</button>
+                </div>
+              </div>
+            {%- endform -%}
+          </div>
+        </div>
+      {%- endfor -%}
+    </div>
+  {%- else -%}
+    <p class="form-note">Todavía no has guardado ninguna dirección.</p>
+  {%- endif -%}
+</div>
+
+<script>
+  (function () {
+    var root = document.querySelector('[data-addresses]');
+    if (!root) return;
+    root.addEventListener('click', function (e) {
+      var t = e.target.closest('[data-address-toggle]');
+      if (!t) return;
+      var view = root.querySelector('[data-address-view="' + t.getAttribute('data-address-toggle') + '"]');
+      if (view) view.hidden = !view.hidden;
+    });
+    // Country → province sync using data-provinces on each <option>
+    function syncProvinces(select) {
+      var target = document.querySelector(select.getAttribute('data-province-target'));
+      if (!target) return;
+      var opt = select.options[select.selectedIndex];
+      var provinces = [];
+      try { provinces = JSON.parse(opt.getAttribute('data-provinces') || '[]'); } catch (err) {}
+      var wrap = target.closest('[data-province-wrap]') || target.parentElement;
+      target.innerHTML = '';
+      if (!provinces.length) { if (wrap) wrap.style.display = 'none'; return; }
+      if (wrap) wrap.style.display = '';
+      var def = target.getAttribute('data-default');
+      provinces.forEach(function (p) {
+        var o = document.createElement('option');
+        o.value = p[0]; o.textContent = p[1];
+        if (def && def === p[1]) o.selected = true;
+        target.appendChild(o);
+      });
+    }
+    root.querySelectorAll('[data-country]').forEach(function (select) {
+      var def = select.getAttribute('data-default');
+      if (def) { for (var i = 0; i < select.options.length; i++) { if (select.options[i].value === def) { select.selectedIndex = i; break; } } }
+      syncProvinces(select);
+      select.addEventListener('change', function () { syncProvinces(select); });
+    });
+  })();
+</script>
+
+{% schema %}
+{ "name": "Direcciones", "settings": [] }
+{% endschema %}

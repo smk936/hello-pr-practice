@@ -1,0 +1,88 @@
+{%- comment -%} Editorial hero. Image or video background, headline, up to two CTAs. {%- endcomment -%}
+{%- liquid
+  assign light = false
+  if section.settings.text_color == 'light'
+    assign light = true
+  endif
+-%}
+<section class="hero hero--{{ section.settings.height }}" {% if section.settings.height == 'full' %}style="min-height: {{ section.settings.height_desktop }}vh"{% endif %}>
+  <div class="hero__media">
+    {%- if section.settings.video != blank -%}
+      {{ section.settings.video | video_tag: autoplay: true, loop: true, muted: true, controls: false, playsinline: true, image_size: '1920x' }}
+    {%- elsif section.settings.image != blank -%}
+      <img
+        src="{{ section.settings.image | image_url: width: 2000 }}"
+        srcset="{{ section.settings.image | image_url: width: 800 }} 800w, {{ section.settings.image | image_url: width: 1400 }} 1400w, {{ section.settings.image | image_url: width: 2000 }} 2000w"
+        sizes="100vw"
+        alt="{{ section.settings.image.alt | default: section.settings.heading | escape }}"
+        width="{{ section.settings.image.width }}" height="{{ section.settings.image.height }}"
+        loading="eager" fetchpriority="high">
+    {%- else -%}
+      {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder' }}
+    {%- endif -%}
+    {%- if light and section.settings.scrim -%}<div class="hero__scrim"></div>{%- endif -%}
+  </div>
+
+  <div class="hero__inner page-width{% if light %} hero__inner--light{% endif %}" style="text-align: {{ section.settings.align }}; justify-items: {% if section.settings.align == 'center' %}center{% elsif section.settings.align == 'right' %}end{% else %}start{% endif %}">
+    {%- if section.settings.eyebrow != blank -%}<span class="label reveal">{{ section.settings.eyebrow | escape }}</span>{%- endif -%}
+    {%- if section.settings.heading != blank -%}
+      <h1 class="display display--xl hero__title reveal">{{ section.settings.heading }}</h1>
+    {%- endif -%}
+    {%- if section.settings.subheading != blank -%}
+      <p class="lede reveal">{{ section.settings.subheading | escape }}</p>
+    {%- endif -%}
+    {%- if section.settings.button_label != blank or section.settings.button2_label != blank -%}
+      <div class="hero__actions reveal">
+        {%- if section.settings.button_label != blank -%}
+          <a class="btn" href="{{ section.settings.button_link | default: routes.all_products_collection_url }}">{{ section.settings.button_label | escape }}</a>
+        {%- endif -%}
+        {%- if section.settings.button2_label != blank -%}
+          <a class="btn btn--secondary" href="{{ section.settings.button2_link }}">{{ section.settings.button2_label | escape }}</a>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+  </div>
+
+  {%- if section.settings.corner_note != blank -%}
+    <span class="hero__meta">{{ section.settings.corner_note | escape }}</span>
+  {%- endif -%}
+</section>
+
+{% schema %}
+{
+  "name": "Héroe",
+  "tag": "section",
+  "settings": [
+    { "type": "image_picker", "id": "image", "label": "Imagen de fondo" },
+    { "type": "video", "id": "video", "label": "Vídeo de fondo (opcional, sustituye la imagen)" },
+    { "type": "checkbox", "id": "scrim", "label": "Oscurecer para legibilidad", "default": true },
+    { "type": "header", "content": "Contenido" },
+    { "type": "text", "id": "eyebrow", "label": "Antetítulo", "default": "Otoño / Invierno" },
+    { "type": "inline_richtext", "id": "heading", "label": "Título", "default": "El abrigo que no pasa" },
+    { "type": "text", "id": "subheading", "label": "Subtítulo", "default": "Una colección corta. Piezas que aguantan el uso diario y varios inviernos." },
+    { "type": "text", "id": "button_label", "label": "Botón principal", "default": "Ver la colección" },
+    { "type": "url", "id": "button_link", "label": "Enlace principal" },
+    { "type": "text", "id": "button2_label", "label": "Botón secundario" },
+    { "type": "url", "id": "button2_link", "label": "Enlace secundario" },
+    { "type": "text", "id": "corner_note", "label": "Nota lateral (vertical)", "default": "Edición limitada" },
+    { "type": "header", "content": "Disposición" },
+    {
+      "type": "select", "id": "height", "label": "Altura",
+      "options": [ { "value": "full", "label": "Pantalla completa" }, { "value": "tall", "label": "Alta" } ],
+      "default": "full"
+    },
+    { "type": "range", "id": "height_desktop", "min": 60, "max": 100, "step": 2, "unit": "vh", "label": "Altura (escritorio)", "default": 90 },
+    {
+      "type": "select", "id": "align", "label": "Alineación",
+      "options": [ { "value": "left", "label": "Izquierda" }, { "value": "center", "label": "Centro" }, { "value": "right", "label": "Derecha" } ],
+      "default": "left"
+    },
+    {
+      "type": "select", "id": "text_color", "label": "Color de texto",
+      "options": [ { "value": "light", "label": "Claro (sobre foto)" }, { "value": "dark", "label": "Oscuro" } ],
+      "default": "light"
+    }
+  ],
+  "presets": [ { "name": "Héroe" } ]
+}
+{% endschema %}

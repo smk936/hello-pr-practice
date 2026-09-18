@@ -1,0 +1,49 @@
+{%- comment -%} Blog listing. {%- endcomment -%}
+<div class="section section--tight">
+  <div class="page-width">
+    <div class="page-hero">
+      <span class="label">Diario</span>
+      <h1 class="page-hero__title">{{ blog.title | escape }}</h1>
+    </div>
+    {%- paginate blog.articles by section.settings.posts_per_page -%}
+      <div class="article-list">
+        {%- for article in blog.articles -%}
+          <article class="article-card reveal" style="--i:{{ forloop.index }}">
+            {%- if article.image != blank -%}
+              <a class="article-card__media" href="{{ article.url }}">
+                {{ article.image | image_url: width: 800 | image_tag: loading: 'lazy', sizes: '(min-width:768px) 33vw, 100vw', widths: '400,600,800', alt: article.title | escape }}
+              </a>
+            {%- endif -%}
+            <span class="article-card__meta">{{ article.published_at | date: '%d %b %Y' }}{% if article.tags.size > 0 %} · {{ article.tags.first }}{% endif %}</span>
+            <a href="{{ article.url }}"><h2 class="article-card__title">{{ article.title | escape }}</h2></a>
+            {%- if section.settings.show_excerpt -%}
+              <p class="measure">{{ article.excerpt_or_content | strip_html | truncatewords: 24 }}</p>
+            {%- endif -%}
+          </article>
+        {%- endfor -%}
+      </div>
+      {%- if paginate.pages > 1 -%}
+        <nav class="pagination" role="navigation" aria-label="Paginación">
+          {%- if paginate.previous -%}<a href="{{ paginate.previous.url }}">{% render 'icon', icon: 'arrow' %}</a>{%- endif -%}
+          {%- for part in paginate.parts -%}
+            {%- if part.is_link -%}<a href="{{ part.url }}">{{ part.title }}</a>
+            {%- elsif part.title == paginate.current_page -%}<span aria-current="page">{{ part.title }}</span>
+            {%- else -%}<span>{{ part.title }}</span>{%- endif -%}
+          {%- endfor -%}
+          {%- if paginate.next -%}<a href="{{ paginate.next.url }}">{% render 'icon', icon: 'arrow' %}</a>{%- endif -%}
+        </nav>
+      {%- endif -%}
+    {%- endpaginate -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Blog",
+  "tag": "section",
+  "settings": [
+    { "type": "range", "id": "posts_per_page", "min": 6, "max": 24, "step": 3, "label": "Artículos por página", "default": 12 },
+    { "type": "checkbox", "id": "show_excerpt", "label": "Mostrar extracto", "default": true }
+  ]
+}
+{% endschema %}

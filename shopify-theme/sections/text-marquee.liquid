@@ -1,0 +1,26 @@
+{%- comment -%} Scrolling display-type band, a brand rhythm device. {%- endcomment -%}
+<section class="{% if section.settings.contrast %}band--contrast{% endif %}" style="padding-block: {{ section.settings.spacing }}px">
+  <div class="textband">
+    <div class="textband__track">
+      {%- assign words = section.settings.text | split: ',' -%}
+      {%- for n in (1..2) -%}
+        <span aria-hidden="{% if n == 2 %}true{% else %}false{% endif %}">
+          {%- for word in words -%}{{ word | strip | escape }}{%- endfor -%}
+        </span>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Banda de texto",
+  "tag": "section",
+  "settings": [
+    { "type": "checkbox", "id": "contrast", "label": "Fondo oscuro", "default": false },
+    { "type": "text", "id": "text", "label": "Palabras (separadas por comas)", "default": "Hecho para durar, Tejidos honestos, Sin prisa, Temporada tras temporada" },
+    { "type": "range", "id": "spacing", "min": 0, "max": 80, "step": 4, "unit": "px", "label": "Espaciado", "default": 24 }
+  ],
+  "presets": [ { "name": "Banda de texto" } ]
+}
+{% endschema %}

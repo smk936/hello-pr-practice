@@ -1,0 +1,23 @@
+{%- comment -%} Usage: {% render 'price', price_product: product %}  (or price_variant: variant) {%- endcomment -%}
+{%- liquid
+  if price_variant
+    assign current_price = price_variant.price
+    assign compare_price = price_variant.compare_at_price
+    assign varies = false
+  else
+    assign current_price = price_product.price
+    assign compare_price = price_product.compare_at_price
+    assign varies = price_product.price_varies
+  endif
+-%}
+<span class="price {% if compare_price > current_price %}price--on-sale{% endif %}">
+  {%- if varies and price_product.price_min < price_product.price_max -%}
+    <span class="price__from">Desde</span> {{ price_product.price_min | money }}
+  {%- else -%}
+    {%- if compare_price > current_price -%}<s class="price__was">{{ compare_price | money }}</s>{%- endif -%}
+    <span class="price__now">{{ current_price | money }}</span>
+    {%- if compare_price > current_price -%}
+      <span class="price__off">&minus;{{ compare_price | minus: current_price | times: 100.0 | divided_by: compare_price | round }}%</span>
+    {%- endif -%}
+  {%- endif -%}
+</span>
