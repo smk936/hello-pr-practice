@@ -4,9 +4,10 @@ An editorial fashion theme built natively for Shopify (Liquid, JSON templates,
 sections with `{% schema %}`). No React, no Node runtime, no build step — it
 uploads and runs directly on Shopify.
 
-- **Identity:** Fraunces (display) · Schibsted Grotesk (text) · Fragment Mono
+- **Identity:** Bodoni Moda (display) · Schibsted Grotesk (text) · Fragment Mono
   (labels). Fonts are **self-hosted** from `assets/` (no external requests).
-- **Palette:** Cal `#ECEAE2`, Tinta `#17120E`, Almagre `#9A3B2B`, Mar `#22484C`.
+- **Palette (lujo):** Ónice `#14110D`, Marfil `#ECE6DA`, Oro viejo `#BFA05A`,
+  Vino `#6E3038`. Fondo oscuro editorial — sin beige.
 - **Language:** default locale is Spanish (`locales/es.default.json`).
 
 ## Install

@@ -10,26 +10,27 @@
   {
     "name": "Colores",
     "settings": [
+      { "type": "paragraph", "content": "Paleta de lujo: Ónice + Marfil + Oro viejo. Cámbiala a tu gusto." },
       { "type": "header", "content": "Superficies" },
-      { "type": "color", "id": "color_background", "label": "Fondo (Cal)", "default": "#ECEAE2" },
-      { "type": "color", "id": "color_text", "label": "Texto (Tinta)", "default": "#17120E" },
-      { "type": "color", "id": "color_background_contrast", "label": "Fondo oscuro (Tinta)", "default": "#17120E" },
-      { "type": "color", "id": "color_text_contrast", "label": "Texto sobre oscuro (Cal)", "default": "#ECEAE2" },
+      { "type": "color", "id": "color_background", "label": "Fondo (Ónice)", "default": "#14110D" },
+      { "type": "color", "id": "color_text", "label": "Texto (Marfil)", "default": "#ECE6DA" },
+      { "type": "color", "id": "color_background_contrast", "label": "Panel profundo (Negro cálido)", "default": "#0F0C09" },
+      { "type": "color", "id": "color_text_contrast", "label": "Texto sobre panel (Marfil)", "default": "#ECE6DA" },
       { "type": "header", "content": "Acentos" },
-      { "type": "color", "id": "color_accent", "label": "Acento (Almagre)", "default": "#9A3B2B" },
-      { "type": "color", "id": "color_secondary", "label": "Secundario (Mar)", "default": "#22484C" },
-      { "type": "color", "id": "color_muted", "label": "Texto secundario (Piedra)", "default": "#6B6459" },
-      { "type": "color", "id": "color_border", "label": "Bordes / hairlines", "default": "#D6D1C6" },
-      { "type": "color", "id": "color_sale", "label": "Rebaja", "default": "#7A2E33" },
+      { "type": "color", "id": "color_accent", "label": "Acento (Oro viejo)", "default": "#BFA05A" },
+      { "type": "color", "id": "color_secondary", "label": "Secundario (Vino)", "default": "#6E3038" },
+      { "type": "color", "id": "color_muted", "label": "Texto secundario (Piedra cálida)", "default": "#948A7B" },
+      { "type": "color", "id": "color_border", "label": "Bordes / hairlines", "default": "#342E25" },
+      { "type": "color", "id": "color_sale", "label": "Rebaja", "default": "#C77E60" },
       { "type": "header", "content": "Botones" },
-      { "type": "color", "id": "color_button_background", "label": "Fondo del botón", "default": "#17120E" },
-      { "type": "color", "id": "color_button_text", "label": "Texto del botón", "default": "#ECEAE2" }
+      { "type": "color", "id": "color_button_background", "label": "Fondo del botón (Marfil)", "default": "#ECE6DA" },
+      { "type": "color", "id": "color_button_text", "label": "Texto del botón (Ónice)", "default": "#14110D" }
     ]
   },
   {
     "name": "Tipografía",
     "settings": [
-      { "type": "paragraph", "content": "El tema usa Fraunces, Schibsted Grotesk y Fragment Mono como identidad de marca." },
+      { "type": "paragraph", "content": "El tema usa Bodoni Moda, Schibsted Grotesk y Fragment Mono como identidad de marca." },
       { "type": "range", "id": "type_base_size", "min": 14, "max": 18, "step": 1, "unit": "px", "label": "Tamaño base de texto", "default": 16 }
     ]
   },
