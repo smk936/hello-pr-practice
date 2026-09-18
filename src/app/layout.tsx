@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import type { ReactNode } from "react";
 import "./globals.css";
 import { Providers } from "@/components/Providers";
@@ -23,6 +23,13 @@ export const metadata: Metadata = {
   },
   twitter: { card: "summary_large_image", title: "CENIT", description: "Ropa que se queda." },
   robots: { index: true, follow: true },
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
+  themeColor: "#ECEAE2",
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {

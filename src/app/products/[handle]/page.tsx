@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getCommerce } from "@/lib/commerce/provider";
 import { ProductBuy } from "@/components/ProductBuy";
+import { ProductGallery } from "@/components/ProductGallery";
 import { ProductCard } from "@/components/ProductCard";
 
 export async function generateStaticParams() {
@@ -74,18 +75,7 @@ export default async function ProductPage({ params }: { params: { handle: string
         </nav>
 
         <div className="pdp">
-          <div className="gallery" aria-label="Galería de imágenes">
-            {product.images.map((img, i) => (
-              <figure className="gtile" style={{ background: img.tone }} key={i}>
-                <span className="tag">
-                  {String(i + 1).padStart(2, "0")} · {img.alt}
-                </span>
-              </figure>
-            ))}
-            <figure className="gtile" style={{ background: "#8C7A67" }}>
-              <span className="tag">vídeo · [placeholder]</span>
-            </figure>
-          </div>
+          <ProductGallery product={product} />
 
           <ProductBuy product={product} />
         </div>

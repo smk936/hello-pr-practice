@@ -30,6 +30,11 @@ export default function CheckoutPage() {
     if (user) setForm((f) => ({ ...f, email: f.email || user.email, name: f.name || user.name }));
   }, [user]);
 
+  useEffect(() => {
+    document.body.classList.add("has-submitbar");
+    return () => document.body.classList.remove("has-submitbar");
+  }, []);
+
   const total = formatMoney(cart.subtotal.amount, cart.subtotal.currencyCode);
   const set = (k: string) => (e: ChangeEvent<HTMLInputElement>) =>
     setForm((f) => ({ ...f, [k]: e.target.value }));
@@ -56,11 +61,7 @@ export default function CheckoutPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           email: form.email,
-          items: cart.lines.map((l) => ({
-            title: l.title,
-            amount: l.unitPrice.amount,
-            quantity: l.quantity,
-          })),
+          items: cart.lines.map((l) => ({ title: l.title, amount: l.unitPrice.amount, quantity: l.quantity })),
         }),
       });
       const data = await res.json();
@@ -106,6 +107,18 @@ export default function CheckoutPage() {
     );
   }
 
+  const summaryLines = cart.lines.map((l) => (
+    <div key={l.id} className="co__line">
+      <span>
+        {l.quantity}× {l.title}{" "}
+        <span className="mono" style={{ color: "var(--muted)" }}>
+          {l.variantTitle}
+        </span>
+      </span>
+      <span>{formatMoney(l.unitPrice.amount * l.quantity, l.unitPrice.currencyCode)}</span>
+    </div>
+  ));
+
   return (
     <div className="wrap">
       <header className="phead">
@@ -120,8 +133,23 @@ export default function CheckoutPage() {
         <b>Pago</b>
       </div>
 
+      {/* Mobile: collapsible order summary */}
+      <details className="co-summary-m">
+        <summary>
+          <span>Ver resumen ({cart.totalQuantity})</span>
+          <span>{total}</span>
+        </summary>
+        <div className="co-summary-body">
+          {summaryLines}
+          <div className="co__tot">
+            <span>Total</span>
+            <span>{total}</span>
+          </div>
+        </div>
+      </details>
+
       <div className="co">
-        <form onSubmit={submit} noValidate>
+        <form id="checkout-form" onSubmit={submit} noValidate>
           <p className="notice" style={{ marginBottom: 20 }}>
             Compra como invitado, sin crear cuenta. Pago cifrado, procesado por{" "}
             <span className="ph">Stripe</span>. En modo desarrollo no se realiza ningún cargo.
@@ -164,35 +192,38 @@ export default function CheckoutPage() {
               {serverError}
             </p>
           ) : null}
-          <button className="btn btn--block" type="submit" disabled={loading}>
-            <span>{loading ? "Procesando…" : `Confirmar pedido — ${total}`}</span>
-          </button>
-          <p className="drawer__note mono" style={{ marginTop: 10 }}>
-            No se te cobra hasta que confirmes.
-          </p>
+          <div className="co-inline-submit">
+            <button className="btn btn--block" type="submit" disabled={loading}>
+              <span>{loading ? "Procesando…" : `Confirmar pedido — ${total}`}</span>
+            </button>
+            <p className="drawer__note mono" style={{ marginTop: 10 }}>
+              No se te cobra hasta que confirmes.
+            </p>
+          </div>
         </form>
 
         <aside className="co__summary">
           <div className="mono" style={{ fontSize: ".7rem", color: "var(--muted)", marginBottom: 12 }}>
             Tu pedido ({cart.totalQuantity})
           </div>
-          {cart.lines.map((l) => (
-            <div key={l.id} className="co__line">
-              <span>
-                {l.quantity}× {l.title}{" "}
-                <span className="mono" style={{ color: "var(--muted)" }}>
-                  {l.variantTitle}
-                </span>
-              </span>
-              <span>{formatMoney(l.unitPrice.amount * l.quantity, l.unitPrice.currencyCode)}</span>
-            </div>
-          ))}
+          {summaryLines}
           <div className="co__tot">
             <span>Total</span>
             <span>{total}</span>
           </div>
         </aside>
       </div>
+
+      {/* Mobile: sticky submit bar */}
+      <div className="co-submit-bar">
+        <span className="buybar__price">
+          <span>{total}</span>
+        </span>
+        <button className="btn" type="submit" form="checkout-form" disabled={loading}>
+          <span>{loading ? "Procesando…" : "Confirmar pedido"}</span>
+        </button>
+      </div>
+
       <div style={{ height: "clamp(40px,8vh,90px)" }} />
     </div>
   );

@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getCommerce } from "@/lib/commerce/provider";
 import { ProductCard } from "@/components/ProductCard";
+import { FilterBar } from "@/components/FilterBar";
 import type { SortKey } from "@/lib/commerce/types";
 
 type SearchParams = Record<string, string | string[] | undefined>;
@@ -12,13 +13,6 @@ export async function generateMetadata({ params }: { params: { handle: string } 
   if (!c) return {};
   return { title: c.title, description: c.intro, alternates: { canonical: `/collections/${c.handle}` } };
 }
-
-const SORTS: { key: SortKey; label: string }[] = [
-  { key: "featured", label: "Destacados" },
-  { key: "newest", label: "Novedades" },
-  { key: "price-asc", label: "Precio ↑" },
-  { key: "price-desc", label: "Precio ↓" },
-];
 
 function toArr(v?: string | string[]): string[] {
   return v == null ? [] : Array.isArray(v) ? v : [v];
@@ -55,20 +49,6 @@ export default async function CategoryPage({
     new Set(facetSource.flatMap((p) => p.options.find((o) => o.name === "Talla")?.values ?? [])),
   );
 
-  function hrefWith(next: { sort?: SortKey; colors?: string[]; sizes?: string[]; sale?: boolean }) {
-    const s = { sort, colors, sizes, sale, ...next };
-    const sp = new URLSearchParams();
-    if (s.sort && s.sort !== "featured") sp.set("sort", s.sort);
-    for (const c of s.colors) sp.append("color", c);
-    for (const z of s.sizes) sp.append("size", z);
-    if (s.sale) sp.set("sale", "1");
-    const q = sp.toString();
-    return `/collections/${params.handle}${q ? `?${q}` : ""}`;
-  }
-  const toggle = (arr: string[], v: string) =>
-    arr.includes(v) ? arr.filter((x) => x !== v) : [...arr, v];
-
-  const hasFilters = colors.length > 0 || sizes.length > 0 || sale;
   const sig =
     collection.handle === "novedades" ? "Nuevo" : collection.handle === "rebajas" ? "Rebaja" : undefined;
 
@@ -80,35 +60,15 @@ export default async function CategoryPage({
         <p>{collection.intro}</p>
       </header>
 
-      <div className="toolbar">
-        <div className="filterbar">
-          {allColors.map((c) => (
-            <Link key={c} className="chip" data-active={colors.includes(c)} href={hrefWith({ colors: toggle(colors, c) })}>
-              {c}
-            </Link>
-          ))}
-          {allSizes.map((z) => (
-            <Link key={z} className="chip" data-active={sizes.includes(z)} href={hrefWith({ sizes: toggle(sizes, z) })}>
-              {z}
-            </Link>
-          ))}
-          <Link className="chip" data-active={sale} href={hrefWith({ sale: !sale })}>
-            Rebajas
-          </Link>
-          {hasFilters ? (
-            <Link className="chip" href={hrefWith({ colors: [], sizes: [], sale: false })}>
-              Limpiar
-            </Link>
-          ) : null}
-        </div>
-        <div className="filterbar">
-          {SORTS.map((s) => (
-            <Link key={s.key} className="chip" data-active={sort === s.key} href={hrefWith({ sort: s.key })}>
-              {s.label}
-            </Link>
-          ))}
-        </div>
-      </div>
+      <FilterBar
+        handle={params.handle}
+        allColors={allColors}
+        allSizes={allSizes}
+        colors={colors}
+        sizes={sizes}
+        sale={sale}
+        sort={sort}
+      />
 
       <p className="count mono" style={{ marginBottom: 18 }}>
         {products.length} {products.length === 1 ? "pieza" : "piezas"}

@@ -301,4 +301,92 @@ details.acc[open] summary .pm{transform:rotate(45deg)}
 .steps{display:flex;gap:16px;font-family:var(--mono);font-size:.7rem;color:var(--muted);margin-bottom:22px}
 .steps b{color:var(--text)}
 
+/* ============ MOBILE-FIRST REFINEMENTS ============ */
+@media (max-width:920px){
+  .size{min-height:46px;min-width:56px}
+  .qty button{width:44px;height:44px}
+  .swatch{width:30px;height:30px}
+}
+@media (max-width:639px){ .ft__trust{grid-template-columns:1fr 1fr} }
+
+/* generic bottom sheet */
+.sheet-scrim{position:fixed;inset:0;z-index:70;background:rgba(23,18,14,.5);opacity:0;visibility:hidden;transition:opacity var(--dur-3),visibility var(--dur-3)}
+.sheet-scrim[data-open="true"]{opacity:1;visibility:visible}
+.sheet{position:fixed;left:0;right:0;bottom:0;z-index:71;background:var(--surface);border-top:1px solid var(--border);transform:translateY(101%);transition:transform var(--dur-3) var(--ease-out);max-height:86dvh;display:flex;flex-direction:column}
+.sheet[data-open="true"]{transform:none}
+.sheet__grab{width:38px;height:4px;background:var(--border);margin:10px auto 2px;border-radius:9999px}
+.sheet__head{display:flex;justify-content:space-between;align-items:center;padding:6px var(--gutter) 12px;border-bottom:1px solid var(--border)}
+.sheet__head h3{font-family:var(--serif);font-size:1.25rem}
+.sheet__body{padding:18px var(--gutter);overflow:auto}
+.sheet__foot{padding:12px var(--gutter);padding-bottom:calc(12px + env(safe-area-inset-bottom,0px));border-top:1px solid var(--border);display:flex;gap:10px}
+.opt-group{margin-bottom:24px}
+.opt-group>h4{font-family:var(--mono);font-size:.68rem;letter-spacing:.06em;color:var(--muted);margin-bottom:12px}
+.opt-row{display:flex;flex-wrap:wrap;gap:8px}
+.opt{font-family:var(--mono);font-size:.78rem;border:1px solid var(--border);color:var(--text);padding:12px 15px;min-height:46px;display:inline-flex;align-items:center;cursor:pointer;background:none}
+.opt[data-active="true"]{background:var(--ink);color:var(--surface);border-color:var(--ink)}
+.opt[aria-disabled="true"]{color:var(--muted-soft);text-decoration:line-through;cursor:not-allowed;border-style:dashed}
+
+/* category filter controls */
+.filter-desktop{display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between;align-items:center;border-block:1px solid var(--border);padding-block:14px;margin-bottom:22px}
+.filter-mobile{display:none}
+@media (max-width:920px){
+  .filter-desktop{display:none}
+  .filter-mobile{display:flex;gap:10px;position:sticky;top:56px;z-index:30;background:var(--surface);padding-block:12px;border-bottom:1px solid var(--border);margin-bottom:16px}
+  .filter-mobile button{flex:1;font-family:var(--mono);font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;background:none;border:1px solid var(--border);color:var(--text);padding:13px;min-height:48px;cursor:pointer;display:inline-flex;justify-content:center;gap:6px}
+  .filter-mobile .n{color:var(--accent)}
+}
+
+/* PDP sticky add-to-cart bar */
+.buybar{display:none}
+@media (max-width:920px){
+  .buybar{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:45;gap:12px;align-items:center;background:var(--surface);border-top:1px solid var(--border);padding:10px var(--gutter);padding-bottom:calc(10px + env(safe-area-inset-bottom,0px))}
+  .buybar__price{font-feature-settings:"tnum" 1;font-size:1rem;white-space:nowrap;display:flex;flex-direction:column;line-height:1.1}
+  .buybar__price s{color:var(--muted-soft);font-size:.75rem}
+  .buybar .btn{flex:1}
+  .buy .buyrow{display:none}
+  body.has-buybar{padding-bottom:calc(74px + env(safe-area-inset-bottom,0px))}
+}
+
+/* PDP gallery dots */
+.gdots{display:none}
+@media (max-width:919px){
+  .gdots{display:flex;gap:7px;justify-content:center;padding-top:12px}
+  .gdots i{width:6px;height:6px;border-radius:9999px;background:var(--border);transition:background var(--dur-2)}
+  .gdots i[data-on="true"]{background:var(--text)}
+}
+
+/* header icon actions */
+.hdr__actions .lbl{display:inline}
+@media (max-width:900px){ .hdr__actions .lbl{display:none} .hdr__actions{gap:18px} }
+.hdr__ic{display:inline-flex;align-items:center;gap:6px}
+.hdr__ic svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.4}
+
+/* search overlay */
+.search-ov{position:fixed;inset:0;z-index:66;background:var(--surface);opacity:0;visibility:hidden;transform:translateY(-6px);transition:opacity var(--dur-3),transform var(--dur-3) var(--ease-out),visibility var(--dur-3);padding:var(--gutter)}
+.search-ov[data-open="true"]{opacity:1;visibility:visible;transform:none}
+.search-ov__top{display:flex;gap:12px;align-items:center;margin-bottom:24px;padding-top:8px}
+.search-ov__top input{flex:1;font-family:var(--serif);font-size:clamp(1.3rem,5vw,1.8rem);background:none;border:0;border-bottom:1px solid var(--border);padding:10px 0;color:var(--text)}
+.search-ov__top input:focus{outline:none;border-color:var(--ink)}
+
+/* checkout mobile */
+.co-summary-m{display:none}
+.co-submit-bar{display:none}
+@media (max-width:900px){
+  .co-summary-m{display:block;border:1px solid var(--border);margin-bottom:22px}
+  .co-summary-m>summary{list-style:none;cursor:pointer;padding:15px 16px;display:flex;justify-content:space-between;align-items:center;font-family:var(--mono);font-size:.78rem}
+  .co-summary-m>summary::-webkit-details-marker{display:none}
+  .co-summary-m .co-summary-body{padding:0 16px 14px}
+  .co__summary{display:none}
+  .co-inline-submit{display:none}
+  .co-submit-bar{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:45;gap:12px;align-items:center;background:var(--surface);border-top:1px solid var(--border);padding:10px var(--gutter);padding-bottom:calc(10px + env(safe-area-inset-bottom,0px))}
+  .co-submit-bar .btn{flex:1}
+  body.has-submitbar{padding-bottom:calc(74px + env(safe-area-inset-bottom,0px))}
+}
+
+/* skeleton loading */
+.sk{background:var(--cal-deep);animation:pulse 1.3s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+.sk-line{height:12px}
+.sk-frame{aspect-ratio:4/5}
+
 @media (prefers-reduced-motion:reduce){*{animation-duration:.001ms!important;transition-duration:.001ms!important}}
