@@ -17,3 +17,6 @@ next-env.d.ts
 .DS_Store
 *.log
 npm-debug.log*
+
+# build artifacts (theme is versioned as source under shopify-theme/)
+*.zip
